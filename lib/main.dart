@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         'home': (_) => HomeScreen(),
         'login': (_) => LoginScreen(),
         'register': (_) => RegisterScreen(),
+        'admin': (_) => AdminScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
