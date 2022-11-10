@@ -48,11 +48,11 @@ class RegisterScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final loginForm = Provider.of<LoginFormProvider>(context);
+    final registerForm = Provider.of<LoginFormProvider>(context);
 
     return Container(
       child: Form(
-        key: loginForm.formKey,
+        key: registerForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -60,10 +60,34 @@ class _LoginForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
+                  hintText: '', labelText: 'Name', prefixIcon: Icons.person),
+              onChanged: (value) => registerForm.name = value,
+              validator: (value) {
+                return (value != null && value.length >= 6)
+                    ? null
+                    : 'Name field cant be null';
+              },
+            ),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: '', labelText: 'Surname', prefixIcon: Icons.person),
+              onChanged: (value) => registerForm.surname = value,
+              validator: (value) {
+                return (value != null && value.length >= 6)
+                    ? null
+                    : 'Surname field cant be null';
+              },
+            ),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
                   hintText: 'john.doe@gmail.com',
                   labelText: 'Correo electrónico',
                   prefixIcon: Icons.alternate_email_rounded),
-              onChanged: (value) => loginForm.email = value,
+              onChanged: (value) => registerForm.email = value,
               validator: (value) {
                 String pattern =
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -74,7 +98,6 @@ class _LoginForm extends StatelessWidget {
                     : 'El valor ingresado no luce como un correo';
               },
             ),
-            SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
               obscureText: true,
@@ -83,7 +106,7 @@ class _LoginForm extends StatelessWidget {
                   hintText: '*****',
                   labelText: 'Contraseña',
                   prefixIcon: Icons.lock_outline),
-              onChanged: (value) => loginForm.password = value,
+              onChanged: (value) => registerForm.password = value,
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
@@ -100,30 +123,35 @@ class _LoginForm extends StatelessWidget {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      loginForm.isLoading ? 'Espere' : 'Registrar',
+                      registerForm.isLoading ? 'Espere' : 'Registrar',
                       style: TextStyle(color: Colors.white),
                     )),
-                onPressed: loginForm.isLoading
+                onPressed: registerForm.isLoading
                     ? null
                     : () async {
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
 
-                        if (!loginForm.isValidForm()) return;
+                        if (!registerForm.isValidForm()) return;
 
-                        loginForm.isLoading = true;
+                        // registerForm.isLoading = true;
 
-                        // TODO: validar si el login es correcto
-                        final String? errorMessage = await authService
-                            .createUser(loginForm.email, loginForm.password);
+                        //validar si el login es correcto
+                        final String? errorMessage =
+                            await authService.createUser(
+                          registerForm.name,
+                          registerForm.surname,
+                          registerForm.email,
+                          registerForm.password,
+                        );
 
                         if (errorMessage == null) {
                           Navigator.pushReplacementNamed(context, 'home');
                         } else {
-                          // TODO: mostrar error en pantalla
+                          //mostrar error en pantalla
                           print(errorMessage);
-                          loginForm.isLoading = false;
+                          registerForm.isLoading = false;
                         }
                       })
           ],
