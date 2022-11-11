@@ -91,41 +91,42 @@ class _LoginForm extends StatelessWidget {
             ),
             SizedBox(height: 30),
             MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                disabledColor: Colors.grey,
-                elevation: 0,
-                color: Colors.deepPurple,
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                    child: Text(
-                      creatingForm.isLoading ? 'Espere' : 'Ingresar',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                onPressed: creatingForm.isLoading
-                    ? null
-                    : () async {
-                        FocusScope.of(context).unfocus();
-                        final authService =
-                            Provider.of<AuthService>(context, listen: false);
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: Colors.deepPurple,
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  child: Text(
+                    creatingForm.isLoading ? 'Espere' : 'Ingresar',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              onPressed: creatingForm.isLoading
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      final authService =
+                          Provider.of<AuthService>(context, listen: false);
 
-                        if (!creatingForm.isValidForm()) return;
+                      if (!creatingForm.isValidForm()) return;
 
-                        creatingForm.isLoading = true;
+                      creatingForm.isLoading = true;
 
-                        // validar si el login es correcto
-                        final String? errorMessage = await authService.login(
-                            creatingForm.email, creatingForm.password);
+                      // validar si el login es correcto
+                      final String? data = await authService.login(
+                          creatingForm.email, creatingForm.password);
+                      final spliter = data?.split(',');
 
-                        if (errorMessage == null) {
-                          Navigator.pushReplacementNamed(context, 'home');
-                        } else {
-                          //mostrar error en pantalla
-                          // print( errorMessage );
-                          NotificationsService.showSnackbar(errorMessage);
-                          creatingForm.isLoading = false;
-                        }
-                      })
+                      if (spliter?[0] == 'a') {
+                        Navigator.pushReplacementNamed(context, 'admin');
+                      } else if (spliter?[0] == 'u') {
+                        Navigator.pushReplacementNamed(context, 'user');
+                      } else if (spliter?[0] == 'u' && spliter?[1] == 0) {
+                        print('el usuario no esta verificado');
+                      }
+                    },
+            )
           ],
         ),
       ),

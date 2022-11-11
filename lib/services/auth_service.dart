@@ -8,8 +8,7 @@ import 'package:productos_app/Models/cicles_response.dart';
 import 'package:productos_app/Models/ciclos.dart';
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = 'http://salesin.allsites.es/public/api/register';
-  final String _firebaseToken = 'AIzaSyBcytoCbDUARrX8eHpcR-Bdrdq0yUmSjf8';
+  final String _baseUrl = 'salesin.allsites.es';
 
   final storage = new FlutterSecureStorage();
 
@@ -44,32 +43,42 @@ class AuthService extends ChangeNotifier {
     final Map<String, dynamic> authData = {
       'email': email,
       'password': password,
-      'returnSecureToken': true
+      // 'returnSecureToken': true
     };
 
-    final url = Uri.https(
-        _baseUrl, '/v1/accounts:signInWithPassword', {'key': _firebaseToken});
+    final url = Uri.http(_baseUrl, '/public/api/login', {});
 
-    final resp = await http.post(url, body: json.encode(authData));
+    final resp = await http.post(url,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": ""
+        },
+        body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-    if (decodedResp.containsKey('idToken')) {
+    if (decodedResp['success']) {
       // Token hay que guardarlo en un lugar seguro
       // decodedResp['idToken'];
-      await storage.write(key: 'token', value: decodedResp['idToken']);
-      return null;
+      await storage.write(key: 'token', value: decodedResp['data']['token']);
+      await storage.write(
+          key: 'id', value: decodedResp['data']['id'].toString());
+      return decodedResp['data']['type'] +
+          ',' +
+          decodedResp['data']['actived'].toString();
     } else {
-      return decodedResp['error']['message'];
+      return decodedResp['message'];
     }
   }
 
   Future logout() async {
-    await storage.delete(key: 'token');
+    var tokken = await storage.read(key: 'token') as String;
+    await storage.delete(key: tokken);
     return;
   }
 
   Future<String> readToken() async {
-    return await storage.read(key: 'token') ?? '';
+    return await storage.read(key: 'token') as String;
   }
 }
 
