@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:productos_app/Models/cicles_response.dart';
+import 'package:productos_app/Models/ciclos.dart';
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'http://salesin.allsites.es/public/api/register';
@@ -68,5 +70,29 @@ class AuthService extends ChangeNotifier {
 
   Future<String> readToken() async {
     return await storage.read(key: 'token') ?? '';
+  }
+}
+
+class GetCicles extends ChangeNotifier {
+  String _baseUrl = 'salesin.allsites.es';
+
+  List<Ciclos> getAllCiclos = [];
+
+  GetCicles() {
+    print('Inicializando');
+
+    this.getCiclesName();
+  }
+
+  getCiclesName() async {
+    print('INCICLES');
+    var url = Uri.http(_baseUrl, '/public/api/cicles');
+
+    final response = await http.get(url);
+    final ciclesResponse = cicles_Response.fromJson(response.body);
+
+    // print(ciclesResponse.data[1].name);
+    getAllCiclos = ciclesResponse.data;
+    notifyListeners();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productos_app/Models/ciclos.dart';
 import 'package:provider/provider.dart';
 
 import 'package:productos_app/providers/login_form_provider.dart';
@@ -6,6 +7,24 @@ import 'package:productos_app/services/services.dart';
 
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
+
+import 'package:http/http.dart' as http;
+
+// class getCicles extends ChangeNotifier {
+//   String _baseUrl = 'http://salesin.allsites.es/public/api/cicles';
+
+//   CiclesProvider() {
+//     print('Inicializando');
+//   }
+
+//   getCiclesName() async {
+//     var url = Uri.https(_baseUrl);
+
+//     final response = await http.get(url);
+
+//     print(response.body);
+//   }
+// }
 
 class RegisterScreen extends StatelessWidget {
   @override
@@ -24,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(height: 30),
               ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(), child: _LoginForm())
+                  create: (_) => LoginFormProvider(), child: _RegisterForm())
             ],
           )),
           SizedBox(height: 50),
@@ -45,9 +64,18 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ciclesProvider = Provider.of<GetCicles>(context);
+    List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
+    String _selectedItem = ciclos[0].nameCicle;
+    List<String> _options = [];
+
+    for (var i = 0; i < ciclos.length; i++) {
+      _options.add(ciclos[i].nameCicle);
+    }
+
     final registerForm = Provider.of<LoginFormProvider>(context);
 
     return Container(
@@ -55,6 +83,7 @@ class _LoginForm extends StatelessWidget {
         key: registerForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
+          // ignore: sort_child_properties_last
           children: [
             TextFormField(
               autocorrect: false,
@@ -111,6 +140,20 @@ class _LoginForm extends StatelessWidget {
                 return (value != null && value.length >= 6)
                     ? null
                     : 'La contraseña debe de ser de 6 caracteres';
+              },
+            ),
+            DropdownButton(
+              value: _selectedItem,
+              items: _options
+                  .map(
+                    (day) => DropdownMenuItem(
+                      child: Text(day),
+                      value: day,
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                _selectedItem = value.toString();
               },
             ),
             SizedBox(height: 30),
