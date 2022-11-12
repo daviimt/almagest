@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:productos_app/Models/cicles_response.dart';
-import 'package:productos_app/Models/ciclos.dart';
+import 'package:almagest/Models/cicles_response.dart';
+import 'package:almagest/Models/ciclos.dart';
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'salesin.allsites.es';
@@ -52,12 +52,13 @@ class AuthService extends ChangeNotifier {
         headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          "Authorization": ""
+          "Authorization": "Some toke"
         },
         body: json.encode(authData));
+
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-    if (decodedResp['success']) {
+    if (decodedResp['success'] == true) {
       // Token hay que guardarlo en un lugar seguro
       // decodedResp['idToken'];
       await storage.write(key: 'token', value: decodedResp['data']['token']);
@@ -72,8 +73,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future logout() async {
-    var tokken = await storage.read(key: 'token') as String;
-    await storage.delete(key: tokken);
+    await storage.delete(key: 'token');
     return;
   }
 

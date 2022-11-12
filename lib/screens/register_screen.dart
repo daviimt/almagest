@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:productos_app/Models/ciclos.dart';
 import 'package:provider/provider.dart';
 
-import 'package:productos_app/providers/login_form_provider.dart';
-import 'package:productos_app/services/services.dart';
-
-import 'package:productos_app/ui/input_decorations.dart';
-import 'package:productos_app/widgets/widgets.dart';
+import 'package:almagest/services/services.dart';
+import 'package:almagest/Models/models.dart';
+import 'package:almagest/widgets/widgets.dart';
+import 'package:almagest/ui/input_decorations.dart';
 
 import 'package:http/http.dart' as http;
+
+import '../providers/providers.dart';
 
 // class getCicles extends ChangeNotifier {
 //   String _baseUrl = 'http://salesin.allsites.es/public/api/cicles';
@@ -43,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(height: 30),
               ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(), child: _RegisterForm())
+                  create: (_) => RegisterFormProvider(), child: _RegisterForm())
             ],
           )),
           SizedBox(height: 50),
@@ -76,7 +76,7 @@ class _RegisterForm extends StatelessWidget {
       _options.add(ciclos[i].nameCicle);
     }
 
-    final registerForm = Provider.of<LoginFormProvider>(context);
+    final registerForm = Provider.of<RegisterFormProvider>(context);
 
     return Container(
       child: Form(

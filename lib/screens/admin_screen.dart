@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:productos_app/Models/models.dart';
+import 'package:provider/provider.dart';
+import 'package:almagest/Models/models.dart';
+import 'package:almagest/services/services.dart';
 
 enum Actions { share, delete, archive }
 
@@ -10,55 +12,64 @@ class AdminScreen extends StatelessWidget {
   BuildContext? get context => null;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Admin Menu'),
-          centerTitle: true,
+  Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Admin Menu'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.login_outlined),
+          onPressed: () {
+            authService.logout();
+            Navigator.pushReplacementNamed(context, 'login');
+          },
         ),
-        body: SlidableAutoCloseBehavior(
-          closeWhenOpened: true,
-          child: ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final user = users[index];
-              return Slidable(
-                key: Key(user.name),
-                startActionPane: ActionPane(
-                  motion: const StretchMotion(),
-                  dismissible: DismissiblePane(
-                    onDismissed: () => _onDismissed(index, Actions.share),
-                  ),
-                  children: [
-                    SlidableAction(
-                      backgroundColor: Colors.green,
-                      icon: Icons.share,
-                      label: 'Share',
-                      onPressed: (context) =>
-                          _onDismissed(index, Actions.share),
-                    ),
-                  ],
+      ),
+      body: SlidableAutoCloseBehavior(
+        closeWhenOpened: true,
+        child: ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Slidable(
+              key: Key(user.name),
+              startActionPane: ActionPane(
+                motion: const StretchMotion(),
+                dismissible: DismissiblePane(
+                  onDismissed: () => _onDismissed(index, Actions.share),
                 ),
-                endActionPane: ActionPane(
-                  motion: const BehindMotion(),
-                  dismissible: DismissiblePane(
-                    onDismissed: () => _onDismissed(index, Actions.delete),
+                children: [
+                  SlidableAction(
+                    backgroundColor: Colors.green,
+                    icon: Icons.share,
+                    label: 'Share',
+                    onPressed: (context) => _onDismissed(index, Actions.share),
                   ),
-                  children: [
-                    SlidableAction(
-                      backgroundColor: Colors.red,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                      onPressed: (context) =>
-                          _onDismissed(index, Actions.delete),
-                    ),
-                  ],
+                ],
+              ),
+              endActionPane: ActionPane(
+                motion: const BehindMotion(),
+                dismissible: DismissiblePane(
+                  onDismissed: () => _onDismissed(index, Actions.delete),
                 ),
-                child: buildUserListTile(user),
-              );
-            },
-          ),
+                children: [
+                  SlidableAction(
+                    backgroundColor: Colors.red,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                    onPressed: (context) => _onDismissed(index, Actions.delete),
+                  ),
+                ],
+              ),
+              child: buildUserListTile(user),
+            );
+          },
         ),
-      );
+      ),
+    );
+  }
 
   void _onDismissed(int index, Actions action) {
     final user = users[index];

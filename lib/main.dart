@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:productos_app/screens/screens.dart';
-import 'package:productos_app/services/services.dart';
+import 'package:almagest/screens/screens.dart';
+import 'package:almagest/services/services.dart';
 
 void main() => runApp(AppState());
 
@@ -11,6 +11,10 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthService(),
+          lazy: false,
+        ),
         ChangeNotifierProvider(
           create: (_) => GetCicles(),
           lazy: false,
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Productos App',
+      title: 'Almagest',
       initialRoute: 'login',
       routes: {
         'checking': (_) => CheckAuthScreen(),
