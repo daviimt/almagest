@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:almagest/Models/cicles_response.dart';
-import 'package:almagest/Models/ciclos.dart';
+import 'package:almagest/Models/models.dart';
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'salesin.allsites.es';
@@ -79,6 +78,39 @@ class AuthService extends ChangeNotifier {
 
   Future<String> readToken() async {
     return await storage.read(key: 'token') as String;
+  }
+}
+
+class UserService extends ChangeNotifier {
+  final String _baseUrl = 'salesin.allsites.es';
+  bool isLoading = true;
+  final List<Data> usuarios = [];
+
+  UserService() {
+    getUsers();
+  }
+
+  Future<List<Data>> getUsers() async {
+    final url = Uri.http(_baseUrl, '/public/api/users');
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    var user = Users.fromJson(decodedResp);
+    for (var i in user.data!) {
+      usuarios.add(i);
+    }
+    isLoading = false;
+    notifyListeners();
+    return usuarios;
   }
 }
 

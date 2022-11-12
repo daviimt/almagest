@@ -16,6 +16,10 @@ class AppState extends StatelessWidget {
           lazy: false,
         ),
         ChangeNotifierProvider(
+          create: (_) => UserService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
           create: (_) => GetCicles(),
           lazy: false,
         ),
