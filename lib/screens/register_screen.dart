@@ -69,11 +69,10 @@ class _RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final ciclesProvider = Provider.of<GetCicles>(context);
     List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
-    String _selectedItem = ciclos[0].nameCicle;
-    List<String> _options = [];
-
+    String selectedItem = ciclos[0].nameCicle;
+    List<String> options = [];
     for (var i = 0; i < ciclos.length; i++) {
-      _options.add(ciclos[i].nameCicle);
+      options.add(ciclos[i].nameCicle);
     }
 
     final registerForm = Provider.of<RegisterFormProvider>(context);
@@ -87,24 +86,24 @@ class _RegisterForm extends StatelessWidget {
           children: [
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.name,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '', labelText: 'Name', prefixIcon: Icons.person),
               onChanged: (value) => registerForm.name = value,
               validator: (value) {
-                return (value != null && value.length >= 6)
+                return (value != null && value.length > 1)
                     ? null
                     : 'Name field cant be null';
               },
             ),
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.name,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '', labelText: 'Surname', prefixIcon: Icons.person),
               onChanged: (value) => registerForm.surname = value,
               validator: (value) {
-                return (value != null && value.length >= 6)
+                return (value != null && value.length > 1)
                     ? null
                     : 'Surname field cant be null';
               },
@@ -120,7 +119,7 @@ class _RegisterForm extends StatelessWidget {
               validator: (value) {
                 String pattern =
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regExp = new RegExp(pattern);
+                RegExp regExp = RegExp(pattern);
 
                 return regExp.hasMatch(value ?? '')
                     ? null
@@ -132,43 +131,37 @@ class _RegisterForm extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: '*****',
+                  hintText: '*******',
                   labelText: 'Contraseña',
                   prefixIcon: Icons.lock_outline),
               onChanged: (value) => registerForm.password = value,
               validator: (value) {
-                return (value != null && value.length >= 6)
+                return (value != null && value.length >= 8)
                     ? null
-                    : 'La contraseña debe de ser de 6 caracteres';
+                    : 'The password lenght must be longer than 8';
               },
             ),
             DropdownButton(
-              value: _selectedItem,
-              items: _options
+              value: selectedItem,
+              items: options
                   .map(
-                    (day) => DropdownMenuItem(
-                      child: Text(day),
-                      value: day,
+                    (courseName) => DropdownMenuItem(
+                      value: courseName,
+                      child: Text(courseName),
                     ),
                   )
                   .toList(),
               onChanged: (value) {
-                _selectedItem = value.toString();
+                selectedItem = value.toString();
               },
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 disabledColor: Colors.grey,
                 elevation: 0,
                 color: Colors.deepPurple,
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                    child: Text(
-                      registerForm.isLoading ? 'Espere' : 'Registrar',
-                      style: TextStyle(color: Colors.white),
-                    )),
                 onPressed: registerForm.isLoading
                     ? null
                     : () async {
@@ -196,7 +189,14 @@ class _RegisterForm extends StatelessWidget {
                           print(errorMessage);
                           registerForm.isLoading = false;
                         }
-                      })
+                      },
+                child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 15),
+                    child: Text(
+                      registerForm.isLoading ? 'Espere' : 'Registrar',
+                      style: const TextStyle(color: Colors.white),
+                    )))
           ],
         ),
       ),
