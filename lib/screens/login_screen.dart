@@ -47,11 +47,11 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final creatingForm = Provider.of<LoginFormProvider>(context);
+    final loginForm = Provider.of<LoginFormProvider>(context);
 
     return Container(
       child: Form(
-        key: creatingForm.formKey,
+        key: loginForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -62,7 +62,7 @@ class _LoginForm extends StatelessWidget {
                   hintText: 'john.doe@gmail.com',
                   labelText: 'Correo electrónico',
                   prefixIcon: Icons.alternate_email_rounded),
-              onChanged: (value) => creatingForm.email = value,
+              onChanged: (value) => loginForm.email = value,
               validator: (value) {
                 String pattern =
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -82,7 +82,7 @@ class _LoginForm extends StatelessWidget {
                   hintText: '*****',
                   labelText: 'Contraseña',
                   prefixIcon: Icons.lock_outline),
-              onChanged: (value) => creatingForm.password = value,
+              onChanged: (value) => loginForm.password = value,
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
@@ -99,23 +99,23 @@ class _LoginForm extends StatelessWidget {
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   child: Text(
-                    creatingForm.isLoading ? 'Espere' : 'Ingresar',
+                    loginForm.isLoading ? 'Espere' : 'Ingresar',
                     style: TextStyle(color: Colors.white),
                   )),
-              onPressed: creatingForm.isLoading
+              onPressed: loginForm.isLoading
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
                       final authService =
                           Provider.of<AuthService>(context, listen: false);
 
-                      if (!creatingForm.isValidForm()) return;
+                      if (!loginForm.isValidForm()) return;
 
-                      creatingForm.isLoading = true;
+                      loginForm.isLoading = true;
 
                       // validar si el login es correcto
                       final String? data = await authService.login(
-                          creatingForm.email, creatingForm.password);
+                          loginForm.email, loginForm.password);
                       final spliter = data?.split(',');
 
                       if (spliter?[0] == 'a') {
