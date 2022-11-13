@@ -32,7 +32,7 @@ class AdminScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final user = users[index];
           return Slidable(
-            startActionPane: const ActionPane(
+            startActionPane: ActionPane(
               motion: StretchMotion(),
               children: [
                 // A SlidableAction can have an icon and/or a label.
@@ -52,7 +52,7 @@ class AdminScreen extends StatelessWidget {
                 ),
               ],
             ),
-            endActionPane: const ActionPane(
+            endActionPane: ActionPane(
               motion: ScrollMotion(),
               children: [
                 SlidableAction(
