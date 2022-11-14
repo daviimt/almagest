@@ -7,7 +7,7 @@ import 'package:almagest/services/services.dart';
 enum Actions { share, delete, archive }
 
 class AdminScreen extends StatelessWidget {
-  AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AdminScreen extends StatelessWidget {
         title: const Text('Admin Menu'),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.login_outlined),
+          icon: const Icon(Icons.login_outlined),
           onPressed: () {
             authService.logout();
             Navigator.pushReplacementNamed(context, 'login');
@@ -32,7 +32,7 @@ class AdminScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final user = users[index];
           return Slidable(
-            startActionPane: ActionPane(
+            startActionPane: const ActionPane(
               motion: StretchMotion(),
               children: [
                 // A SlidableAction can have an icon and/or a label.
@@ -52,7 +52,7 @@ class AdminScreen extends StatelessWidget {
                 ),
               ],
             ),
-            endActionPane: ActionPane(
+            endActionPane: const ActionPane(
               motion: ScrollMotion(),
               children: [
                 SlidableAction(
@@ -94,6 +94,7 @@ class AdminScreen extends StatelessWidget {
   //   }
   // }
 
+  // ignore: unused_element
   void _showSnackBar(BuildContext context, String message, Color color) {
     final snackBar = SnackBar(content: Text(message), backgroundColor: color);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
