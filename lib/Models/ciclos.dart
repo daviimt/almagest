@@ -15,6 +15,10 @@ class Ciclos {
     return name;
   }
 
+  int get idCicle {
+    return id;
+  }
+
   factory Ciclos.fromJson(String str) => Ciclos.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());

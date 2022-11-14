@@ -70,9 +70,11 @@ class _RegisterForm extends StatelessWidget {
     final ciclesProvider = Provider.of<GetCicles>(context);
     List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
     String selectedItem = ciclos[0].nameCicle;
+    final Map<String, int> map1 = {};
     List<String> options = [];
     for (var i = 0; i < ciclos.length; i++) {
-      options.add(ciclos[i].nameCicle);
+      map1[ciclos[i].nameCicle.toString()] = ciclos[i].idCicle;
+      // options.add(ciclos[i].nameCicle);
     }
 
     final registerForm = Provider.of<RegisterFormProvider>(context);
