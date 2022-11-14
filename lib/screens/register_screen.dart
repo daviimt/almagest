@@ -141,7 +141,7 @@ class _RegisterForm extends StatelessWidget {
                     : 'The password lenght must be longer than 8';
               },
             ),
-            DropdownButton(
+            DropdownButtonFormField<String>(
               value: selectedItem,
               items: options
                   .map(
