@@ -112,7 +112,9 @@ class UserService extends ChangeNotifier {
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
     var user = Users.fromJson(decodedResp);
     for (var i in user.data!) {
-      usuarios.add(i);
+      if (i.deleted == 0) {
+        usuarios.add(i);
+      }
     }
     isLoading = false;
     notifyListeners();
@@ -137,6 +139,22 @@ class UserService extends ChangeNotifier {
 
   Future postDeactivate(String id) async {
     final url = Uri.http(_baseUrl, '/public/api/deactivate', {'user_id': id});
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    // ignore: unused_local_variable
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+  }
+
+  Future postDelete(String id) async {
+    final url = Uri.http(_baseUrl, '/public/api/delete', {'user_id': id});
     String? token = await AuthService().readToken();
     isLoading = true;
     notifyListeners();
