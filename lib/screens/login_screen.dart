@@ -127,6 +127,7 @@ class _LoginForm extends StatelessWidget {
                         customToast('El usuario no esta activo', context);
                       } else {
                         customToast('Email or password incorrect', context);
+                        Navigator.pushReplacementNamed(context, 'login');
                       }
                     },
             )
@@ -142,7 +143,7 @@ class _LoginForm extends StatelessWidget {
       context: context,
       animation: StyledToastAnimation.scale,
       reverseAnimation: StyledToastAnimation.fade,
-      position: StyledToastPosition.center,
+      position: StyledToastPosition.top,
       animDuration: Duration(seconds: 1),
       duration: Duration(seconds: 4),
       curve: Curves.elasticOut,
