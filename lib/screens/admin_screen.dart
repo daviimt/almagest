@@ -27,60 +27,66 @@ class AdminScreen extends StatelessWidget {
           },
         ),
       ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return Slidable(
-            startActionPane: ActionPane(
-              motion: StretchMotion(),
-              children: [
-                // A SlidableAction can have an icon and/or a label.
-                SlidableAction(
-                  onPressed: (context) {
-                    user.actived = 1;
-                  },
-                  backgroundColor: Color(0xFF7BC043),
-                  foregroundColor: Colors.white,
-                  icon: Icons.check_circle,
-                  label: 'Activar',
-                ),
-                SlidableAction(
-                  onPressed: (context) {
-                    user.actived = 0;
-                  },
-                  backgroundColor: Color.fromARGB(255, 75, 81, 82),
-                  foregroundColor: Colors.white,
-                  icon: Icons.disabled_by_default_rounded,
-                  label: 'Desactivar',
-                ),
-              ],
-            ),
-            endActionPane: ActionPane(
-              motion: ScrollMotion(),
-              children: [
-                SlidableAction(
-                  // An action can be bigger than the others.
+      body: ListView.separated(
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Slidable(
+              startActionPane: ActionPane(
+                motion: const StretchMotion(),
+                children: [
+                  // A SlidableAction can have an icon and/or a label.
+                  SlidableAction(
+                    onPressed: (context) {
+                      print(user.id);
+                      userService.postActivate(user.id.toString());
+                    },
+                    backgroundColor: const Color(0xFF7BC043),
+                    foregroundColor: Colors.white,
+                    icon: Icons.person_add_alt,
+                    label: 'Activar',
+                  ),
+                  SlidableAction(
+                    onPressed: (context) {
+                      print(user.id);
+                      userService.postDeactivate(user.id.toString());
+                    },
+                    backgroundColor: const Color.fromARGB(255, 75, 81, 82),
+                    foregroundColor: Colors.white,
+                    icon: Icons.person_add_disabled_outlined,
+                    label: 'Desactivar',
+                  ),
+                ],
+              ),
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    // An action can be bigger than the others.
 
-                  onPressed: (context) {},
-                  backgroundColor: Color.fromARGB(255, 75, 81, 82),
-                  foregroundColor: Colors.white,
-                  icon: Icons.edit,
-                  label: 'Editar',
-                ),
-                SlidableAction(
-                  onPressed: (context) {},
-                  backgroundColor: Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
-                  icon: Icons.delete,
-                  label: 'Eliminar',
-                ),
-              ],
-            ),
-            child: buildUserListTile(user),
-          );
-        },
-      ),
+                    onPressed: (context) {},
+                    backgroundColor: const Color.fromARGB(255, 75, 81, 82),
+                    foregroundColor: Colors.white,
+                    icon: Icons.edit,
+                    label: 'Editar',
+                  ),
+                  SlidableAction(
+                    onPressed: (context) {
+                      user.deleted;
+                    },
+                    backgroundColor: const Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Eliminar',
+                  ),
+                ],
+              ),
+              child: buildUserListTile(user),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const Divider();
+          },
+          itemCount: users.length),
     );
   }
 
@@ -105,5 +111,13 @@ class AdminScreen extends StatelessWidget {
   }
 
   Widget buildUserListTile(user) => ListTile(
-      contentPadding: const EdgeInsets.all(16), title: Text(user.name));
+        contentPadding: const EdgeInsets.all(16),
+        title: Text(user.name + ' ' + user.surname),
+        subtitle: Text(user.email),
+        leading: const CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.white,
+            backgroundImage: NetworkImage(
+                'https://cdn-icons-png.flaticon.com/512/511/511649.png')),
+      );
 }

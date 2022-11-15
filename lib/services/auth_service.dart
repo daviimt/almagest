@@ -118,6 +118,38 @@ class UserService extends ChangeNotifier {
     notifyListeners();
     return usuarios;
   }
+
+  Future postActivate(String id) async {
+    final url = Uri.http(_baseUrl, '/public/api/activate', {'user_id': id});
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    // ignore: unused_local_variable
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+  }
+
+  Future postDeactivate(String id) async {
+    final url = Uri.http(_baseUrl, '/public/api/deactivate', {'user_id': id});
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    // ignore: unused_local_variable
+    final resp = await http.post(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+  }
 }
 
 class GetCicles extends ChangeNotifier {
