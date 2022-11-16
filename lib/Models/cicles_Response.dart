@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:almagest/Models/ciclos.dart';
+
 import 'ciclos.dart';
 
 class cicles_Response {

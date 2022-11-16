@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/src/material/dropdown.dart';
+
 class Ciclos {
   Ciclos({
     required this.id,
@@ -34,4 +36,6 @@ class Ciclos {
         "name": name,
         "img": img,
       };
+
+  map(DropdownMenuItem<Object> Function(dynamic courseName) param0) {}
 }

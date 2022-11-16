@@ -17,6 +17,8 @@ class AuthService extends ChangeNotifier {
     String surname,
     String email,
     String password,
+    String c_password,
+    int cicle_id,
     /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
@@ -24,12 +26,31 @@ class AuthService extends ChangeNotifier {
       'surname': surname,
       'email': email,
       'password': password,
-      // 'courseId': courseId,
-      'returnSecureToken': true
+      'c_password': c_password,
+      'cicle_id': cicle_id,
     };
     print(authData.toString());
 
-    final url = Uri.parse(_baseUrl);
+    final url = Uri.http(_baseUrl, '/public/api/register', {});
+
+    final resp = await http.post(url,
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": "Some token"
+        },
+        body: json.encode(authData));
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
+    if (decodedResp['success'] == true) {
+      // Token hay que guardarlo en un lugar seguro
+      // decodedResp['idToken'];
+      await storage.write(key: 'token', value: decodedResp['data']['token']);
+      await storage.write(
+          key: 'name', value: decodedResp['data']['name'].toString());
+    } else {
+      return decodedResp['message'];
+    }
 
     // final resp = await http.post(url, body: json.encode(authData));
     // final Map<String, dynamic> decodedResp = json.decode(resp.body);

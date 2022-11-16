@@ -7,7 +7,8 @@ class RegisterFormProvider extends ChangeNotifier {
   String surname = '';
   String email = '';
   String password = '';
-  String cicle_id = '';
+  String c_password = '';
+  int cicle_id = 0;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

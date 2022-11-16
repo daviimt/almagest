@@ -69,12 +69,10 @@ class _RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final ciclesProvider = Provider.of<GetCicles>(context);
     List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
-    String selectedItem = ciclos[0].nameCicle;
-    final Map<String, int> map1 = {};
-    List<String> options = [];
+    Ciclos selectedItem = ciclos[0];
+    List<Ciclos> options = [];
     for (var i = 0; i < ciclos.length; i++) {
-      map1[ciclos[i].nameCicle.toString()] = ciclos[i].idCicle;
-      // options.add(ciclos[i].nameCicle);
+      options.add(ciclos[i]);
     }
 
     final registerForm = Provider.of<RegisterFormProvider>(context);
@@ -143,18 +141,33 @@ class _RegisterForm extends StatelessWidget {
                     : 'The password lenght must be longer than 8';
               },
             ),
-            DropdownButtonFormField<String>(
+            TextFormField(
+              autocorrect: false,
+              obscureText: true,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: '*******',
+                  labelText: 'Contraseña',
+                  prefixIcon: Icons.lock_outline),
+              onChanged: (value) => registerForm.c_password = value,
+              validator: (value) {
+                return (value == registerForm.password)
+                    ? null
+                    : 'The password must be equals';
+              },
+            ),
+            DropdownButtonFormField<Ciclos>(
               value: selectedItem,
               items: options
                   .map(
                     (courseName) => DropdownMenuItem(
                       value: courseName,
-                      child: Text(courseName),
+                      child: Text(courseName.nameCicle),
                     ),
                   )
                   .toList(),
               onChanged: (value) {
-                selectedItem = value.toString();
+                registerForm.cicle_id = (value?.idCicle.toInt())!;
               },
             ),
             const SizedBox(height: 30),
@@ -178,11 +191,12 @@ class _RegisterForm extends StatelessWidget {
                         //validar si el login es correcto
                         final String? errorMessage =
                             await authService.createUser(
-                          registerForm.name,
-                          registerForm.surname,
-                          registerForm.email,
-                          registerForm.password,
-                        );
+                                registerForm.name,
+                                registerForm.surname,
+                                registerForm.email,
+                                registerForm.password,
+                                registerForm.c_password,
+                                registerForm.cicle_id);
 
                         if (errorMessage == null) {
                           Navigator.pushReplacementNamed(context, 'home');
