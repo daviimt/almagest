@@ -155,18 +155,19 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 prefixIcon: Icons.lock_outline),
             onChanged: (value) => registerForm.c_password = value,
             validator: (value) {
-              return (value == registerForm.password)
-                  ? null
-                  : "The passwords don't match";
+              if (value != registerForm.password) {
+                return "The passwords don't match";
+              } else if (value == '') {
+                return "The password cant be null";
+              }
             },
           ),
           DropdownButtonFormField<Ciclos>(
             decoration: InputDecorations.authInputDecoration(
                 prefixIcon: Icons.view_week_outlined,
-                hintText: 'Select cicle',
-                labelText: 'Select Cicle'),
-            //hint: const Text('Select cicle'),
-            //value: selectedItem,
+                hintText: '',
+                labelText: 'Cicle'),
+            // value: selectedItem,
             items: options
                 .map(
                   (courseName) => DropdownMenuItem(
@@ -177,6 +178,13 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 .toList(),
             onChanged: (value) {
               registerForm.cicle_id = (value?.idCicle.toInt())!;
+            },
+            validator: (cicle) {
+              if (isCicleValid(cicle)) {
+                return null;
+              } else {
+                return 'Select a cicle';
+              }
             },
           ),
           const SizedBox(height: 30),
@@ -250,6 +258,8 @@ mixin InputValidationMixin {
   bool isTextValid(texto) => texto.length > 0;
 
   bool isPasswordValid(password) => password.length > 6;
+
+  bool isCicleValid(cicle) => cicle != null;
 
   bool isEmailValid(email) {
     String pattern =
