@@ -131,7 +131,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
           TextFormField(
             autocorrect: false,
             obscureText: true,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             decoration: InputDecorations.authInputDecoration(
                 hintText: '*******',
                 labelText: 'Contraseña',
@@ -148,11 +148,12 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
           TextFormField(
             autocorrect: false,
             obscureText: true,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             decoration: InputDecorations.authInputDecoration(
                 hintText: '*******',
                 labelText: 'Password',
                 prefixIcon: Icons.lock_outline),
+            onChanged: (value) => registerForm.c_password = value,
             validator: (value) {
               return (value == registerForm.password)
                   ? null
@@ -161,7 +162,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
           ),
           DropdownButtonFormField<Ciclos>(
             hint: const Text('Select cicle'),
-            // value: selectedItem,
+            value: selectedItem,
             items: options
                 .map(
                   (courseName) => DropdownMenuItem(
@@ -208,8 +209,9 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
                         //mostrar error en pantalla
-                        customToast('The email is already registered', context);
+                        // customToast('The email is already registered', context);
                         registerForm.isLoading = false;
+                        print(errorMessage);
                       }
                       // }
                     },
