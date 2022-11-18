@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 
 import 'package:almagest/services/services.dart';
@@ -202,7 +203,8 @@ class _RegisterForm extends StatelessWidget {
                           Navigator.pushReplacementNamed(context, 'home');
                         } else {
                           //mostrar error en pantalla
-                          print(errorMessage);
+                          customToast(
+                              'The email is already registered', context);
                           registerForm.isLoading = false;
                         }
                       },
@@ -216,6 +218,20 @@ class _RegisterForm extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void customToast(String s, BuildContext context) {
+    showToast(
+      s,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      reverseAnimation: StyledToastAnimation.fade,
+      position: StyledToastPosition.top,
+      animDuration: Duration(seconds: 1),
+      duration: Duration(seconds: 4),
+      curve: Curves.elasticOut,
+      reverseCurve: Curves.linear,
     );
   }
 }
