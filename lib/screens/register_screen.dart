@@ -139,7 +139,7 @@ class _RegisterForm extends StatelessWidget {
               validator: (value) {
                 return (value != null && value.length >= 8)
                     ? null
-                    : 'The password lenght must be longer than 8';
+                    : 'The password length must be longer than 8';
               },
             ),
             TextFormField(
@@ -148,17 +148,18 @@ class _RegisterForm extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '*******',
-                  labelText: 'Contraseña',
+                  labelText: 'Password',
                   prefixIcon: Icons.lock_outline),
               onChanged: (value) => registerForm.c_password = value,
               validator: (value) {
                 return (value == registerForm.password)
                     ? null
-                    : 'The password must be equals';
+                    : "The passwords don't match";
               },
             ),
             DropdownButtonFormField<Ciclos>(
-              value: selectedItem,
+              hint: Text('Select cicle'),
+              // value: selectedItem,
               items: options
                   .map(
                     (courseName) => DropdownMenuItem(
@@ -198,7 +199,10 @@ class _RegisterForm extends StatelessWidget {
                                 registerForm.password,
                                 registerForm.c_password,
                                 registerForm.cicle_id);
-
+                        // if (registerForm.password != registerForm.c_password) {
+                        //   customToast("The passwords don't match", context);
+                        //   registerForm.isLoading = false;
+                        // } else {
                         if (errorMessage == null) {
                           Navigator.pushReplacementNamed(context, 'home');
                         } else {
@@ -207,6 +211,7 @@ class _RegisterForm extends StatelessWidget {
                               'The email is already registered', context);
                           registerForm.isLoading = false;
                         }
+                        // }
                       },
                 child: Container(
                     padding: const EdgeInsets.symmetric(
