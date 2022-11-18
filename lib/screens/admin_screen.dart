@@ -6,15 +6,16 @@ import 'package:almagest/services/services.dart';
 
 enum Actions { share, delete, archive }
 
-class AdminScreen extends StatelessWidget {
+class AdminScreen extends StatefulWidget {
   const AdminScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    final userService = Provider.of<UserService>(context);
-    List<Data> users = userService.usuarios;
+  State<AdminScreen> createState() => _AdminScreenState();
+}
 
+class _AdminScreenState extends State<AdminScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Menu'),
@@ -22,12 +23,35 @@ class AdminScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.login_outlined),
           onPressed: () {
-            authService.logout();
+            Provider.of<AuthService>(context, listen: false).logout();
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
       ),
-      body: ListView.separated(
+      body: builListView(context, buildUserService(context),
+          builList(buildUserService(context))),
+    );
+  }
+
+  // ignore: unused_element
+  void _showSnackBar(BuildContext context, String message, Color color) {
+    final snackBar = SnackBar(content: Text(message), backgroundColor: color);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  UserService buildUserService(BuildContext context) {
+    final userService = Provider.of<UserService>(context);
+    return userService;
+  }
+
+  List builList(UserService userService) {
+    List<Data> users = userService.usuarios;
+    return users;
+  }
+
+  Widget builListView(
+          BuildContext context, UserService userService, List users) =>
+      ListView.separated(
           itemBuilder: (context, index) {
             final user = users[index];
             if (user.actived == 0) {
@@ -38,6 +62,9 @@ class AdminScreen extends StatelessWidget {
                     SlidableAction(
                       onPressed: (context) {
                         userService.postActivate(user.id.toString());
+                        Navigator.pushReplacementNamed(context, 'admin').then(
+                            (value) => setState(() =>
+                                users = userService.getUsers() as List<Data>));
                       },
                       backgroundColor: const Color(0xFF7BC043),
                       foregroundColor: Colors.white,
@@ -49,18 +76,11 @@ class AdminScreen extends StatelessWidget {
                 endActionPane: ActionPane(
                   motion: const ScrollMotion(),
                   children: [
-                    // SlidableAction(
-                    //   // An action can be bigger than the others.
-
-                    //   onPressed: (context) {},
-                    //   backgroundColor: const Color.fromARGB(255, 75, 81, 82),
-                    //   foregroundColor: Colors.white,
-                    //   icon: Icons.edit,
-                    //   label: 'Editar',
-                    // ),
                     SlidableAction(
                       onPressed: (context) {
                         userService.postDelete(user.id.toString());
+                        Navigator.pushReplacementNamed(context, 'admin').then(
+                            (value) => setState(() => const AdminScreen()));
                       },
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
@@ -79,6 +99,8 @@ class AdminScreen extends StatelessWidget {
                     SlidableAction(
                       onPressed: (context) {
                         userService.postDeactivate(user.id.toString());
+                        Navigator.pushReplacementNamed(context, 'admin').then(
+                            (value) => setState(() => const AdminScreen()));
                       },
                       backgroundColor: const Color.fromARGB(255, 75, 81, 82),
                       foregroundColor: Colors.white,
@@ -90,17 +112,12 @@ class AdminScreen extends StatelessWidget {
                 endActionPane: ActionPane(
                   motion: const ScrollMotion(),
                   children: [
-                    // SlidableAction(
-                    //   // An action can be bigger than the others.
-
-                    //   onPressed: (context) {},
-                    //   backgroundColor: const Color.fromARGB(255, 75, 81, 82),
-                    //   foregroundColor: Colors.white,
-                    //   icon: Icons.edit,
-                    //   label: 'Editar',
-                    // ),
                     SlidableAction(
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        userService.postDelete(user.id.toString());
+                        Navigator.pushReplacementNamed(context, 'admin').then(
+                            (value) => setState(() => const AdminScreen()));
+                      },
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
@@ -115,29 +132,7 @@ class AdminScreen extends StatelessWidget {
           separatorBuilder: (context, index) {
             return const Divider();
           },
-          itemCount: users.length),
-    );
-  }
-
-  // void _onDismissed(int index, Actions action) {
-  //   final user = usuarios[index];
-  //   setState((_) => users.removeAt(index));
-
-  //   switch (action) {
-  //     case Actions.delete:
-  //       _showSnackBar(context!, '${users} is deleted', Colors.red);
-  //       break;
-  //     case Actions.share:
-  //       _showSnackBar(context!, '${users} is shared', Colors.green);
-  //       break;
-  //   }
-  // }
-
-  // ignore: unused_element
-  void _showSnackBar(BuildContext context, String message, Color color) {
-    final snackBar = SnackBar(content: Text(message), backgroundColor: color);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+          itemCount: users.length);
 
   Widget buildUserListTile(user) => ListTile(
         contentPadding: const EdgeInsets.all(16),
