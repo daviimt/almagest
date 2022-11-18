@@ -161,8 +161,12 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
             },
           ),
           DropdownButtonFormField<Ciclos>(
-            hint: const Text('Select cicle'),
-            value: selectedItem,
+            decoration: InputDecorations.authInputDecoration(
+                prefixIcon: Icons.view_week_outlined,
+                hintText: 'Select cicle',
+                labelText: 'Select Cicle'),
+            //hint: const Text('Select cicle'),
+            //value: selectedItem,
             items: options
                 .map(
                   (courseName) => DropdownMenuItem(
