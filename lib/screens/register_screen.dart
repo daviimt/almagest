@@ -243,7 +243,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
 mixin InputValidationMixin {
   bool isTextValid(texto) => texto.length > 0;
 
-  bool isPasswordValid(password) => password.length == 6;
+  bool isPasswordValid(password) => password.length > 6;
 
   bool isEmailValid(email) {
     String pattern =
