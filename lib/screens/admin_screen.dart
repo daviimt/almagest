@@ -3,34 +3,51 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:almagest/Models/models.dart';
 import 'package:almagest/services/services.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 enum Actions { share, delete, archive }
 
-class AdminScreen extends StatefulWidget {
+List<Data> users = [];
+
+Future refresh(BuildContext context) async {
+  users.clear();
+  final usersService = Provider.of<UserService>(context, listen: false);
+  usersService.getUsers();
+}
+
+class AdminScreen extends StatelessWidget {
   const AdminScreen({Key? key}) : super(key: key);
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
-}
-
-class _AdminScreenState extends State<AdminScreen> {
-  @override
   Widget build(BuildContext context) {
+    final usersService = Provider.of<UserService>(context, listen: false);
+    users = usersService.usuarios.cast<Data>();
+    List<Data> usersFinal = [];
+    for (int i = 0; i < users.length; i++) {
+      if (users[i].deleted == 0) {
+        usersFinal.add(users[i]);
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Menu'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.login_outlined),
-          onPressed: () {
-            Provider.of<AuthService>(context, listen: false).logout();
-            Navigator.pushReplacementNamed(context, 'login');
-          },
+        appBar: AppBar(
+          title: const Text('Admin Menu'),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.login_outlined),
+            onPressed: () {
+              Provider.of<AuthService>(context, listen: false).logout();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
         ),
-      ),
-      body: builListView(context, buildUserService(context),
-          builList(buildUserService(context))),
-    );
+        body: RefreshIndicator(
+          onRefresh: () async {
+            refresh(context);
+            Navigator.pushReplacementNamed(context, 'admin');
+          },
+          child: builListView(context, buildUserService(context), usersFinal),
+        ));
   }
 
   // ignore: unused_element
@@ -62,9 +79,8 @@ class _AdminScreenState extends State<AdminScreen> {
                     SlidableAction(
                       onPressed: (context) {
                         userService.postActivate(user.id.toString());
-                        Navigator.pushReplacementNamed(context, 'admin').then(
-                            (value) => setState(() =>
-                                users = userService.getUsers() as List<Data>));
+                        refresh(context);
+                        Navigator.pushReplacementNamed(context, 'admin');
                       },
                       backgroundColor: const Color(0xFF7BC043),
                       foregroundColor: Colors.white,
@@ -77,10 +93,24 @@ class _AdminScreenState extends State<AdminScreen> {
                   motion: const ScrollMotion(),
                   children: [
                     SlidableAction(
-                      onPressed: (context) {
-                        userService.postDelete(user.id.toString());
-                        Navigator.pushReplacementNamed(context, 'admin').then(
-                            (value) => setState(() => const AdminScreen()));
+                      onPressed: (BuildContext _) async {
+                        await CoolAlert.show(
+                          context: context,
+                          type: CoolAlertType.warning,
+                          title: 'Confirmar',
+                          text:
+                              '¿Estás seguro de eliminar la cuenta seleccionada?',
+                          showCancelBtn: true,
+                          confirmBtnColor: Colors.purple,
+                          confirmBtnText: 'Eliminar',
+                          onConfirmBtnTap: () {
+                            userService.postDelete(user.id.toString());
+                            refresh(context);
+                            Navigator.pushReplacementNamed(context, 'admin');
+                          },
+                          onCancelBtnTap: () => Navigator.pop(context),
+                          cancelBtnText: 'Cancelar',
+                        );
                       },
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
@@ -99,8 +129,8 @@ class _AdminScreenState extends State<AdminScreen> {
                     SlidableAction(
                       onPressed: (context) {
                         userService.postDeactivate(user.id.toString());
-                        Navigator.pushReplacementNamed(context, 'admin').then(
-                            (value) => setState(() => const AdminScreen()));
+                        refresh(context);
+                        Navigator.pushReplacementNamed(context, 'admin');
                       },
                       backgroundColor: const Color.fromARGB(255, 75, 81, 82),
                       foregroundColor: Colors.white,
@@ -115,8 +145,8 @@ class _AdminScreenState extends State<AdminScreen> {
                     SlidableAction(
                       onPressed: (context) {
                         userService.postDelete(user.id.toString());
-                        Navigator.pushReplacementNamed(context, 'admin').then(
-                            (value) => setState(() => const AdminScreen()));
+                        refresh(context);
+                        Navigator.pushReplacementNamed(context, 'admin');
                       },
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
