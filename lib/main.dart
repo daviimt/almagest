@@ -1,3 +1,4 @@
+import 'package:almagest/services/verify_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,10 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => GetCicles(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => VerifyService(),
           lazy: false,
         ),
         // ChangeNotifierProvider(create: (_) => AuthService()),

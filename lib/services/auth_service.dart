@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -40,7 +41,9 @@ class AuthService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    String id = decodedResp['data']['id'].toString();
 
+    VerifyService().isVerify(id);
     if (decodedResp['success'] == true) {
       // Token hay que guardarlo en un lugar seguro
       // decodedResp['idToken'];
