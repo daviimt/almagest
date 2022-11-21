@@ -8,8 +8,7 @@ import 'package:almagest/Models/models.dart';
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'salesin.allsites.es';
-
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   // Si retornamos algo, es un error, si no, todo bien!
   Future<String?> createUser(
@@ -17,8 +16,8 @@ class AuthService extends ChangeNotifier {
     String surname,
     String email,
     String password,
-    String c_password,
-    int cicle_id,
+    String cpassword,
+    int cicleid,
     /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
@@ -26,8 +25,8 @@ class AuthService extends ChangeNotifier {
       'surname': surname,
       'email': email,
       'password': password,
-      'c_password': c_password,
-      'cicle_id': cicle_id,
+      'c_password': cpassword,
+      'cicle_id': cicleid,
     };
     print(authData.toString());
 
@@ -51,18 +50,7 @@ class AuthService extends ChangeNotifier {
     } else {
       return decodedResp['message'];
     }
-
-    // final resp = await http.post(url, body: json.encode(authData));
-    // final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
-    // if (decodedResp.containsKey('idToken')) {
-    //   // Token hay que guardarlo en un lugar seguro
-    //   await storage.write(key: 'token', value: decodedResp['idToken']);
-    //   // decodedResp['idToken'];
-    //   return null;
-    // } else {
-    //   return decodedResp['error']['message'];
-    // }
+    return null;
   }
 
   Future<String?> login(String email, String password) async {

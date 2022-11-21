@@ -2,8 +2,9 @@ class Users {
   bool? success;
   List<Data>? data;
   String? message;
+  int? id;
 
-  Users({this.success, this.data, this.message});
+  Users({this.success, this.data, this.message, this.id});
 
   Users.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -14,6 +15,7 @@ class Users {
       });
     }
     message = json['message'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +25,7 @@ class Users {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     data['message'] = this.message;
+    data['id'] = this.id;
     return data;
   }
 }

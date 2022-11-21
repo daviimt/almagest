@@ -7,8 +7,6 @@ import 'package:almagest/Models/models.dart';
 import 'package:almagest/widgets/widgets.dart';
 import 'package:almagest/ui/input_decorations.dart';
 
-import 'package:http/http.dart' as http;
-
 import '../providers/providers.dart';
 
 // class getCicles extends ChangeNotifier {
@@ -70,10 +68,11 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
   Widget build(BuildContext context) {
     final ciclesProvider = Provider.of<GetCicles>(context);
     List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
-    Ciclos selectedItem = ciclos[0];
     List<Ciclos> options = [];
-    for (var i = 0; i < ciclos.length; i++) {
-      options.add(ciclos[i]);
+    if (ciclos.length > 0) {
+      for (var i = 0; i < ciclos.length; i++) {
+        options.add(ciclos[i]);
+      }
     }
 
     final registerForm = Provider.of<RegisterFormProvider>(context);
@@ -153,13 +152,14 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 hintText: '*******',
                 labelText: 'Password',
                 prefixIcon: Icons.lock_outline),
-            onChanged: (value) => registerForm.c_password = value,
+            onChanged: (value) => registerForm.cpassword = value,
             validator: (value) {
               if (value != registerForm.password) {
                 return "The passwords don't match";
               } else if (value == '') {
                 return "The password cant be null";
               }
+              return null;
             },
           ),
           DropdownButtonFormField<Ciclos>(
@@ -177,7 +177,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 )
                 .toList(),
             onChanged: (value) {
-              registerForm.cicle_id = (value?.idCicle.toInt())!;
+              registerForm.cicleid = (value?.idCicle.toInt())!;
             },
             validator: (cicle) {
               if (isCicleValid(cicle)) {
@@ -203,7 +203,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
 
                       if (!registerForm.isValidForm()) return;
 
-                      // registerForm.isLoading = true;
+                      registerForm.isLoading = true;
 
                       //validar si el login es correcto
                       final String? errorMessage = await authService.createUser(
@@ -211,12 +211,8 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                           registerForm.surname,
                           registerForm.email,
                           registerForm.password,
-                          registerForm.c_password,
-                          registerForm.cicle_id);
-                      // if (registerForm.password != registerForm.c_password) {
-                      //   customToast("The passwords don't match", context);
-                      //   registerForm.isLoading = false;
-                      // } else {
+                          registerForm.cpassword,
+                          registerForm.cicleid);
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
