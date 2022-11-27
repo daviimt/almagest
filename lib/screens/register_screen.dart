@@ -214,7 +214,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                           registerForm.cpassword,
                           registerForm.cicleid);
                       if (errorMessage == null) {
-                        Navigator.pushReplacementNamed(context, 'home');
+                        Navigator.pushReplacementNamed(context, 'login');
                       } else {
                         //mostrar error en pantalla
                         // customToast('The email is already registered', context);

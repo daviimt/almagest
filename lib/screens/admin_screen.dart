@@ -11,7 +11,7 @@ List<Data> users = [];
 
 Future refresh(BuildContext context) async {
   users.clear();
-  final usersService = Provider.of<UserService>(context, listen: false);
+  var usersService = Provider.of<UserService>(context, listen: false);
   usersService.getUsers();
 }
 
@@ -24,7 +24,7 @@ class AdminScreen extends StatelessWidget {
     users = usersService.usuarios.cast<Data>();
     List<Data> usersFinal = [];
     for (int i = 0; i < users.length; i++) {
-      if (users[i].deleted == 0) {
+      if (users[i].deleted == 0 && users[i].type == "u") {
         usersFinal.add(users[i]);
       }
     }
