@@ -22,7 +22,7 @@ class CheckAuthScreen extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (_, __, ___) => LoginScreen(),
-                        transitionDuration: Duration(seconds: 1)));
+                        transitionDuration: Duration(seconds: 0)));
               });
             } else {
               Future.microtask(() {
@@ -30,7 +30,7 @@ class CheckAuthScreen extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (_, __, ___) => HomeScreen(),
-                        transitionDuration: Duration(seconds: 1)));
+                        transitionDuration: Duration(seconds: 0)));
               });
             }
 
