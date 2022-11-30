@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:almagest/Models/models.dart';
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = 'salesin.allsites.es';
+  final String _baseUrl = 'semillero.allsites.es';
   final storage = const FlutterSecureStorage();
 
   // Si retornamos algo, es un error, si no, todo bien!
@@ -22,12 +22,12 @@ class AuthService extends ChangeNotifier {
     /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
-      'name': name,
-      'surname': surname,
+      'firstname': name,
+      'secondname': surname,
       'email': email,
       'password': password,
       'c_password': cpassword,
-      'cicle_id': cicleid,
+      'company_id': cicleid,
     };
     print(authData.toString());
 
