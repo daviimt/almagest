@@ -9,7 +9,7 @@ import 'package:almagest/Models/models.dart';
 import 'auth_service.dart';
 
 class VerifyService extends ChangeNotifier {
-  final String _baseUrl = 'salesin.allsites.es';
+  final String _baseUrl = 'semillero.allsites.es';
 
   final storage = new FlutterSecureStorage();
 
