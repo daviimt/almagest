@@ -66,9 +66,9 @@ class RegisterScreen extends StatelessWidget {
 class _RegisterForm extends StatelessWidget with InputValidationMixin {
   @override
   Widget build(BuildContext context) {
-    final ciclesProvider = Provider.of<GetCicles>(context);
-    List<Ciclos> ciclos = ciclesProvider.getAllCiclos;
-    List<Ciclos> options = [];
+    final ciclesProvider = Provider.of<GetCompanies>(context);
+    List<Companies> ciclos = ciclesProvider.getAllCompanies;
+    List<Companies> options = [];
     if (ciclos.length > 0) {
       for (var i = 0; i < ciclos.length; i++) {
         options.add(ciclos[i]);
@@ -162,7 +162,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
               return null;
             },
           ),
-          DropdownButtonFormField<Ciclos>(
+          DropdownButtonFormField<Companies>(
             decoration: InputDecorations.authInputDecoration(
                 prefixIcon: Icons.view_week_outlined,
                 hintText: '',
@@ -172,12 +172,12 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 .map(
                   (courseName) => DropdownMenuItem(
                     value: courseName,
-                    child: Text(courseName.nameCicle),
+                    child: Text(courseName.nameCompanie),
                   ),
                 )
                 .toList(),
             onChanged: (value) {
-              registerForm.cicleid = (value?.idCicle.toInt())!;
+              registerForm.cicleid = (value?.idCompanie.toInt())!;
             },
             validator: (cicle) {
               if (isCicleValid(cicle)) {
