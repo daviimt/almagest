@@ -189,26 +189,25 @@ class UserService extends ChangeNotifier {
   }
 }
 
-class GetCicles extends ChangeNotifier {
-  String _baseUrl = 'semillero.allsites.es';
+class GetCompanies extends ChangeNotifier {
+  final String _baseUrl = 'semillero.allsites.es';
 
-  List<Ciclos> getAllCiclos = [];
+  List<Companies> getAllCompanies = [];
 
-  GetCicles() {
+  GetCompanies() {
     print('Inicializando');
 
-    this.getCiclesName();
+    getCompaniesName();
   }
 
-  getCiclesName() async {
-    print('INCICLES');
-    var url = Uri.http(_baseUrl, '/public/api/cicles');
+  getCompaniesName() async {
+    print('INCOMPANIES');
+    var url = Uri.http(_baseUrl, '/public/api/companies');
 
     final response = await http.get(url);
-    final ciclesResponse = cicles_Response.fromJson(response.body);
+    final companies_Response = CompaniesResponse.fromJson(response.body);
 
-    // print(ciclesResponse.data[1].name);
-    getAllCiclos = ciclesResponse.data;
+    getAllCompanies = companies_Response.data;
     notifyListeners();
   }
 }

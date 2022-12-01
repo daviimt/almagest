@@ -4,29 +4,33 @@
 
 import 'dart:convert';
 
-import 'package:almagest/Models/ciclos.dart';
+import 'package:almagest/Models/companies.dart';
 
-import 'ciclos.dart';
-
-class cicles_Response {
-  cicles_Response({
+class CompaniesResponse {
+  CompaniesResponse({
     required this.success,
     required this.data,
     required this.message,
   });
 
   bool success;
-  List<Ciclos> data;
+  List<Companies> data;
   String message;
 
-  factory cicles_Response.fromJson(String str) =>
-      cicles_Response.fromMap(json.decode(str));
+  List<Companies> get dataCompanies {
+    return data;
+  }
+
+  factory CompaniesResponse.fromJson(String str) =>
+      CompaniesResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory cicles_Response.fromMap(Map<String, dynamic> json) => cicles_Response(
+  factory CompaniesResponse.fromMap(Map<String, dynamic> json) =>
+      CompaniesResponse(
         success: json["success"],
-        data: List<Ciclos>.from(json["data"].map((x) => Ciclos.fromMap(x))),
+        data:
+            List<Companies>.from(json["data"].map((x) => Companies.fromMap(x))),
         message: json["message"],
       );
 
