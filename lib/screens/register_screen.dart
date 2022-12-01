@@ -183,7 +183,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
               if (isCicleValid(cicle)) {
                 return null;
               } else {
-                return 'Select a cicle';
+                return 'Select a companie';
               }
             },
           ),
