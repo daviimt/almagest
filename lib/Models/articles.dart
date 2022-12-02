@@ -10,19 +10,19 @@ class Articles {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -65,17 +65,17 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['price_min'] = this.priceMin;
-    data['price_max'] = this.priceMax;
-    data['color_name'] = this.colorName;
-    data['weight'] = this.weight;
-    data['size'] = this.size;
-    data['family_id'] = this.familyId;
-    data['deleted'] = this.deleted;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['description'] = description;
+    data['price_min'] = priceMin;
+    data['price_max'] = priceMax;
+    data['color_name'] = colorName;
+    data['weight'] = weight;
+    data['size'] = size;
+    data['family_id'] = familyId;
+    data['deleted'] = deleted;
     return data;
   }
 }

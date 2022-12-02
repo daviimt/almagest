@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:almagest/services/services.dart';
@@ -11,7 +13,7 @@ class UserService extends ChangeNotifier {
   bool isLoading = true;
   final List<Data> usuarios = [];
 
-  UserService() {}
+  UserService();
 
   Future<List<Data>> getUsers() async {
     final url = Uri.http(_baseUrl, '/public/api/users');
@@ -103,9 +105,9 @@ class GetCompanies extends ChangeNotifier {
     var url = Uri.http(_baseUrl, '/public/api/companies');
 
     final response = await http.get(url);
-    final companies_Response = CompaniesResponse.fromJson(response.body);
+    final companiesResponse = CompaniesResponse.fromJson(response.body);
 
-    getAllCompanies = companies_Response.data;
+    getAllCompanies = companiesResponse.data;
     notifyListeners();
   }
 }

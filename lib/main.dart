@@ -5,9 +5,11 @@ import 'package:almagest/screens/screens.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 
-void main() => runApp(AppState());
+void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
+  const AppState({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -30,7 +32,7 @@ class AppState extends StatelessWidget {
         ),
         // ChangeNotifierProvider(create: (_) => AuthService()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     );
   }
 }
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InternetWidget(
-      offline: LoadingScreen(),
+      offline: const LoadingScreen(),
       // ignore: avoid_print
       whenOffline: () => LoadingScreen,
       // ignore: avoid_print
@@ -53,11 +55,11 @@ class MyApp extends StatelessWidget {
         title: 'Almagest',
         initialRoute: 'login',
         routes: {
-          'checking': (_) => CheckAuthScreen(),
-          'home': (_) => HomeScreen(),
-          'login': (_) => LoginScreen(),
-          'register': (_) => RegisterScreen(),
-          'admin': (_) => AdminScreen(),
+          'checking': (_) => const CheckAuthScreen(),
+          'home': (_) => const HomeScreen(),
+          'login': (_) => const LoginScreen(),
+          'register': (_) => const RegisterScreen(),
+          'admin': (_) => const AdminScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(

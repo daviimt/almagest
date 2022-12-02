@@ -10,19 +10,19 @@ class Products {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -62,16 +62,16 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['article_id'] = this.articleId;
-    data['company_id'] = this.companyId;
-    data['compamy_name'] = this.compamyName;
-    data['compamy_description'] = this.compamyDescription;
-    data['price'] = this.price;
-    data['stock'] = this.stock;
-    data['family_id'] = this.familyId;
-    data['deleted'] = this.deleted;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['article_id'] = articleId;
+    data['company_id'] = companyId;
+    data['compamy_name'] = compamyName;
+    data['compamy_description'] = compamyDescription;
+    data['price'] = price;
+    data['stock'] = stock;
+    data['family_id'] = familyId;
+    data['deleted'] = deleted;
     return data;
   }
 }

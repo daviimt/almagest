@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +28,8 @@ import '../providers/providers.dart';
 // }
 
 class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +73,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
     final ciclesProvider = Provider.of<GetCompanies>(context);
     List<Companies> ciclos = ciclesProvider.getAllCompanies;
     List<Companies> options = [];
-    if (ciclos.length > 0) {
+    if (ciclos.isNotEmpty) {
       for (var i = 0; i < ciclos.length; i++) {
         options.add(ciclos[i]);
       }

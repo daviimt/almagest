@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +10,8 @@ import 'package:almagest/providers/providers.dart';
 import 'package:almagest/ui/input_decorations.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,30 +19,30 @@ class LoginScreen extends StatelessWidget {
             child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 250),
+          const SizedBox(height: 250),
           CardContainer(
               child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text('Login', style: Theme.of(context).textTheme.headline4),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ChangeNotifierProvider(
                   create: (_) => LoginFormProvider(), child: _LoginForm())
             ],
           )),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           TextButton(
               onPressed: () =>
                   Navigator.pushReplacementNamed(context, 'register'),
               style: ButtonStyle(
                   overlayColor:
                       MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all(StadiumBorder())),
-              child: Text(
+                  shape: MaterialStateProperty.all(const StadiumBorder())),
+              child: const Text(
                 'Crear una nueva cuenta',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               )),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
         ],
       ),
     )));
@@ -96,12 +100,6 @@ class _LoginForm extends StatelessWidget {
             disabledColor: Colors.grey,
             elevation: 0,
             color: Colors.deepPurple,
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: Text(
-                  loginForm.isLoading ? 'Espere' : 'Ingresar',
-                  style: TextStyle(color: Colors.white),
-                )),
             onPressed: loginForm.isLoading
                 ? null
                 : () async {
@@ -122,6 +120,7 @@ class _LoginForm extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, 'admin');
                     } else if (spliter?[0] == 'u') {
                       Navigator.pushReplacementNamed(context, 'user');
+                      // ignore: unrelated_type_equality_checks
                     } else if (spliter?[0] == 'u' && spliter?[1] == 0) {
                       customToast('El usuario no esta activo', context);
                     } else {
@@ -129,6 +128,13 @@ class _LoginForm extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, 'login');
                     }
                   },
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                child: Text(
+                  loginForm.isLoading ? 'Espere' : 'Ingresar',
+                  style: const TextStyle(color: Colors.white),
+                )),
           )
         ],
       ),
@@ -142,8 +148,8 @@ class _LoginForm extends StatelessWidget {
       animation: StyledToastAnimation.scale,
       reverseAnimation: StyledToastAnimation.fade,
       position: StyledToastPosition.top,
-      animDuration: Duration(seconds: 1),
-      duration: Duration(seconds: 4),
+      animDuration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 4),
       curve: Curves.elasticOut,
       reverseCurve: Curves.linear,
     );

@@ -7,17 +7,17 @@ class UserAlone {
 
   UserAlone.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -66,19 +66,19 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstname'] = this.firstname;
-    data['secondname'] = this.secondname;
-    data['company_id'] = this.companyId;
-    data['actived'] = this.actived;
-    data['email'] = this.email;
-    data['type'] = this.type;
-    data['email_confirmed'] = this.emailConfirmed;
-    data['deleted'] = this.deleted;
-    data['iscontact'] = this.iscontact;
-    data['company'] = this.company;
-    data['created_at'] = this.createdAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstname'] = firstname;
+    data['secondname'] = secondname;
+    data['company_id'] = companyId;
+    data['actived'] = actived;
+    data['email'] = email;
+    data['type'] = type;
+    data['email_confirmed'] = emailConfirmed;
+    data['deleted'] = deleted;
+    data['iscontact'] = iscontact;
+    data['company'] = company;
+    data['created_at'] = createdAt;
     return data;
   }
 }
