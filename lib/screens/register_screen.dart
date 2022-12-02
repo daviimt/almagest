@@ -166,7 +166,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
             decoration: InputDecorations.authInputDecoration(
                 prefixIcon: Icons.view_week_outlined,
                 hintText: '',
-                labelText: 'Companie'),
+                labelText: 'Company'),
             // value: selectedItem,
             items: options
                 .map(
