@@ -9,7 +9,7 @@ class Companies {
   Companies({
     required this.id,
     required this.name,
-    required this.addres,
+    required this.address,
     required this.city,
     required this.cif,
     required this.email,
@@ -22,7 +22,7 @@ class Companies {
 
   int id;
   String name;
-  String addres;
+  String address;
   String city;
   String cif;
   String email;
@@ -47,7 +47,7 @@ class Companies {
   factory Companies.fromMap(Map<String, dynamic> json) => Companies(
         id: json["id"],
         name: json["name"],
-        addres: json["img"],
+        address: json["address"],
         city: json["city"],
         cif: json["cif"],
         email: json["email"],
@@ -61,7 +61,7 @@ class Companies {
   Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
-        "addres": addres,
+        "address": address,
         "city": city,
         "cif": cif,
         "email": email,

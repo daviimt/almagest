@@ -166,7 +166,7 @@ class AdminScreen extends StatelessWidget {
 
   Widget buildUserListTile(user) => ListTile(
         contentPadding: const EdgeInsets.all(16),
-        title: Text(user.name + ' ' + user.surname),
+        title: Text(user.firstname + ' ' + user.secondname),
         subtitle: Text(user.email),
         leading: const CircleAvatar(
             radius: 30,
