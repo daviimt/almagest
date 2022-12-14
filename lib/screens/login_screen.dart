@@ -118,11 +118,11 @@ class _LoginForm extends StatelessWidget {
 
                     if (spliter?[0] == 'a') {
                       Navigator.pushReplacementNamed(context, 'admin');
-                    } else if (spliter?[0] == 'u') {
-                      Navigator.pushReplacementNamed(context, 'user');
                       // ignore: unrelated_type_equality_checks
                     } else if (spliter?[0] == 'u' && spliter?[1] == 0) {
                       customToast('El usuario no esta activo', context);
+                    } else if (spliter?[0] == 'u') {
+                      Navigator.pushReplacementNamed(context, 'user');
                     } else {
                       customToast('Email or password incorrect', context);
                       Navigator.pushReplacementNamed(context, 'login');
