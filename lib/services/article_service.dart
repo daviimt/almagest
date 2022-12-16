@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:almagest/Models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -11,10 +10,10 @@ import '../Models/articles.dart';
 class ArticleService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   final storage = const FlutterSecureStorage();
-  final List<DataArticle> articles = [];
+  final List<Data> articles = [];
   bool isLoading = true;
 
-  getArticles() async {
+  getArticles(String id) async {
     String? token = await storage.read(key: 'token') ?? '';
     isLoading = true;
     notifyListeners();
@@ -32,7 +31,6 @@ class ArticleService extends ChangeNotifier {
     }
     isLoading = false;
     notifyListeners();
-    return articles;
   }
 
   getArticle(String id) async {

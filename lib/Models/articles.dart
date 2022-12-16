@@ -1,8 +1,6 @@
-import 'package:almagest/Models/models.dart';
-
 class Articles {
   bool? success;
-  List<DataArticle>? data;
+  List<Data>? data;
   String? message;
 
   Articles({this.success, this.data, this.message});
@@ -10,9 +8,9 @@ class Articles {
   Articles.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['data'] != null) {
-      data = <DataArticle>[];
+      data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(DataArticle.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     message = json['message'];
@@ -29,7 +27,7 @@ class Articles {
   }
 }
 
-class DataArticle {
+class Data {
   int? id;
   String? name;
   String? description;
@@ -41,7 +39,7 @@ class DataArticle {
   int? familyId;
   int? deleted;
 
-  DataArticle(
+  Data(
       {this.id,
       this.name,
       this.description,
@@ -53,7 +51,7 @@ class DataArticle {
       this.familyId,
       this.deleted});
 
-  DataArticle.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
