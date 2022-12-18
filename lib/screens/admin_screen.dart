@@ -9,14 +9,25 @@ enum Actions { share, delete, archive }
 
 List<UserData> users = [];
 
-Future refresh(BuildContext context) async {
-  users.clear();
-  var usersService = Provider.of<UserService>(context, listen: false);
-  usersService.getUsers();
+class AdminScreen extends StatefulWidget {
+  const AdminScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AdminScreen> createState() => _AdminScreenState();
 }
 
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+class _AdminScreenState extends State<AdminScreen> {
+  Future refresh() async {
+    setState(() => users.clear());
+    var usersService = Provider.of<UserService>(context, listen: false);
+    await usersService.getUsers();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +54,9 @@ class AdminScreen extends StatelessWidget {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            refresh(context);
+            setState(() {
+              refresh();
+            });
             Navigator.pushReplacementNamed(context, 'admin');
           },
           child: builListView(context, buildUserService(context), usersFinal),
@@ -78,9 +91,10 @@ class AdminScreen extends StatelessWidget {
                   children: [
                     SlidableAction(
                       onPressed: (context) {
-                        userService.postActivate(user.id.toString());
-                        refresh(context);
-                        Navigator.pushReplacementNamed(context, 'admin');
+                        setState(() {
+                          userService.postActivate(user.id.toString());
+                          users[index].actived = 1;
+                        });
                       },
                       backgroundColor: const Color(0xFF7BC043),
                       foregroundColor: Colors.white,
@@ -104,9 +118,10 @@ class AdminScreen extends StatelessWidget {
                           confirmBtnColor: Colors.purple,
                           confirmBtnText: 'Eliminar',
                           onConfirmBtnTap: () {
-                            userService.postDelete(user.id.toString());
-                            refresh(context);
-                            Navigator.pushReplacementNamed(context, 'admin');
+                            setState(() {
+                              userService.postDelete(user.id.toString());
+                              users.removeAt(index);
+                            });
                           },
                           onCancelBtnTap: () => Navigator.pop(context),
                           cancelBtnText: 'Cancelar',
@@ -128,9 +143,10 @@ class AdminScreen extends StatelessWidget {
                   children: [
                     SlidableAction(
                       onPressed: (context) {
-                        userService.postDeactivate(user.id.toString());
-                        refresh(context);
-                        Navigator.pushReplacementNamed(context, 'admin');
+                        setState(() {
+                          userService.postDeactivate(user.id.toString());
+                          users[index].actived = 0;
+                        });
                       },
                       backgroundColor: const Color.fromARGB(255, 75, 81, 82),
                       foregroundColor: Colors.white,
@@ -143,10 +159,25 @@ class AdminScreen extends StatelessWidget {
                   motion: const ScrollMotion(),
                   children: [
                     SlidableAction(
-                      onPressed: (context) {
-                        userService.postDelete(user.id.toString());
-                        refresh(context);
-                        Navigator.pushReplacementNamed(context, 'admin');
+                      onPressed: (BuildContext _) async {
+                        await CoolAlert.show(
+                          context: context,
+                          type: CoolAlertType.warning,
+                          title: 'Confirmar',
+                          text:
+                              '¿Estás seguro de eliminar la cuenta seleccionada?',
+                          showCancelBtn: true,
+                          confirmBtnColor: Colors.purple,
+                          confirmBtnText: 'Eliminar',
+                          onConfirmBtnTap: () {
+                            setState(() {
+                              userService.postDelete(user.id.toString());
+                              users.removeAt(index);
+                            });
+                          },
+                          onCancelBtnTap: () => Navigator.pop(context),
+                          cancelBtnText: 'Cancelar',
+                        );
                       },
                       backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
