@@ -10,10 +10,10 @@ import '../Models/articles.dart';
 class ArticleService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   final storage = const FlutterSecureStorage();
-  final List<Data> articles = [];
+  final List<ArticleData> articles = [];
   bool isLoading = true;
 
-  getArticles(String id) async {
+  getArticles() async {
     String? token = await storage.read(key: 'token') ?? '';
     isLoading = true;
     notifyListeners();
@@ -31,6 +31,7 @@ class ArticleService extends ChangeNotifier {
     }
     isLoading = false;
     notifyListeners();
+    return articles;
   }
 
   getArticle(String id) async {

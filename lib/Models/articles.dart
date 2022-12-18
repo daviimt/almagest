@@ -1,6 +1,6 @@
 class Articles {
   bool? success;
-  List<Data>? data;
+  List<ArticleData>? data;
   String? message;
 
   Articles({this.success, this.data, this.message});
@@ -8,9 +8,9 @@ class Articles {
   Articles.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ArticleData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(ArticleData.fromJson(v));
       });
     }
     message = json['message'];
@@ -27,7 +27,7 @@ class Articles {
   }
 }
 
-class Data {
+class ArticleData {
   int? id;
   String? name;
   String? description;
@@ -39,7 +39,7 @@ class Data {
   int? familyId;
   int? deleted;
 
-  Data(
+  ArticleData(
       {this.id,
       this.name,
       this.description,
@@ -51,7 +51,7 @@ class Data {
       this.familyId,
       this.deleted});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ArticleData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];

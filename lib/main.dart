@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           'home': (_) => const HomeScreen(),
           'login': (_) => const LoginScreen(),
           'register': (_) => const RegisterScreen(),
-          'user': (_) => const CatalogScreen(),
+          'user': (_) => const UserScreen(),
           'admin': (_) => const AdminScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,

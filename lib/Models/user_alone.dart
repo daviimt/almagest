@@ -1,13 +1,13 @@
 class UserAlone {
   bool? success;
-  Data? data;
+  UserAloneData? data;
   String? message;
 
   UserAlone({this.success, this.data, this.message});
 
   UserAlone.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? UserAloneData.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -22,7 +22,7 @@ class UserAlone {
   }
 }
 
-class Data {
+class UserAloneData {
   int? id;
   String? firstname;
   String? secondname;
@@ -36,7 +36,7 @@ class Data {
   String? company;
   String? createdAt;
 
-  Data(
+  UserAloneData(
       {this.id,
       this.firstname,
       this.secondname,
@@ -50,7 +50,7 @@ class Data {
       this.company,
       this.createdAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserAloneData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstname = json['firstname'];
     secondname = json['secondname'];

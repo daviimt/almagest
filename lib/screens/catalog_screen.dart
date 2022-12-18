@@ -1,10 +1,10 @@
+import 'package:almagest/Models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:almagest/Models/models.dart';
 
-List<Data> articles = [];
+List<ArticleData> articles = [];
 
 class CatalogScreen extends StatelessWidget {
   const CatalogScreen({Key? key}) : super(key: key);
@@ -12,8 +12,8 @@ class CatalogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final articleService = Provider.of<ArticleService>(context, listen: false);
-    articles = articleService.articles.cast<Data>();
-    List<Data> articlesFinal = [];
+    articles = articleService.articles.cast<ArticleData>();
+    List<ArticleData> articlesFinal = [];
     for (int i = 0; i < articles.length; i++) {
       articlesFinal.add(articles[i]);
     }

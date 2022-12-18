@@ -11,11 +11,11 @@ import 'package:almagest/Models/models.dart';
 class UserService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   bool isLoading = true;
-  final List<Data> usuarios = [];
+  final List<UserData> usuarios = [];
 
   UserService();
 
-  Future<List<Data>> getUsers() async {
+  Future<List<UserData>> getUsers() async {
     final url = Uri.http(_baseUrl, '/public/api/users');
     String? token = await AuthService().readToken();
     isLoading = true;

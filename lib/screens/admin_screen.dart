@@ -7,7 +7,7 @@ import 'package:cool_alert/cool_alert.dart';
 
 enum Actions { share, delete, archive }
 
-List<Data> users = [];
+List<UserData> users = [];
 
 Future refresh(BuildContext context) async {
   users.clear();
@@ -21,8 +21,8 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usersService = Provider.of<UserService>(context, listen: false);
-    users = usersService.usuarios.cast<Data>();
-    List<Data> usersFinal = [];
+    users = usersService.usuarios.cast<UserData>();
+    List<UserData> usersFinal = [];
     for (int i = 0; i < users.length; i++) {
       if (users[i].deleted == 0 && users[i].type == "u") {
         usersFinal.add(users[i]);
@@ -62,7 +62,7 @@ class AdminScreen extends StatelessWidget {
   }
 
   List builList(UserService userService) {
-    List<Data> users = userService.usuarios;
+    List<UserData> users = userService.usuarios;
     return users;
   }
 

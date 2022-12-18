@@ -10,7 +10,7 @@ import '../Models/products.dart';
 class ProductService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   final storage = const FlutterSecureStorage();
-  final List<Data> products = [];
+  final List<ProductData> products = [];
   bool isLoading = true;
 
   getProducts(String id) async {

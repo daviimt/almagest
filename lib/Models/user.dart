@@ -1,6 +1,6 @@
 class Users {
   bool? success;
-  List<Data>? data;
+  List<UserData>? data;
   String? message;
 
   Users({this.success, this.data, this.message});
@@ -8,9 +8,9 @@ class Users {
   Users.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <UserData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(UserData.fromJson(v));
       });
     }
     message = json['message'];
@@ -27,7 +27,7 @@ class Users {
   }
 }
 
-class Data {
+class UserData {
   int? id;
   String? firstname;
   String? secondname;
@@ -41,7 +41,7 @@ class Data {
   String? company;
   String? createdAt;
 
-  Data(
+  UserData(
       {this.id,
       this.firstname,
       this.secondname,
@@ -55,7 +55,7 @@ class Data {
       this.company,
       this.createdAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstname = json['firstname'];
     secondname = json['secondname'];

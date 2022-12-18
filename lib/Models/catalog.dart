@@ -1,16 +1,16 @@
-class Products {
+class Catalog {
   bool? success;
-  List<ProductData>? data;
+  List<CatalogData>? data;
   String? message;
 
-  Products({this.success, this.data, this.message});
+  Catalog({this.success, this.data, this.message});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  Catalog.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['data'] != null) {
-      data = <ProductData>[];
+      data = <CatalogData>[];
       json['data'].forEach((v) {
-        data!.add(ProductData.fromJson(v));
+        data!.add(CatalogData.fromJson(v));
       });
     }
     message = json['message'];
@@ -27,7 +27,7 @@ class Products {
   }
 }
 
-class ProductData {
+class CatalogData {
   int? id;
   int? articleId;
   int? companyId;
@@ -38,7 +38,7 @@ class ProductData {
   int? familyId;
   int? deleted;
 
-  ProductData(
+  CatalogData(
       {this.id,
       this.articleId,
       this.companyId,
@@ -49,7 +49,7 @@ class ProductData {
       this.familyId,
       this.deleted});
 
-  ProductData.fromJson(Map<String, dynamic> json) {
+  CatalogData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     articleId = json['article_id'];
     companyId = json['company_id'];
