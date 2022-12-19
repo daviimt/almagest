@@ -41,7 +41,7 @@ class _UserScreenState extends State<UserScreen> {
     // articles = articleService.articles.cast<ArticleData>();
     for (int i = 0; i < articles.length; i++) {
       if (articles[i].deleted == 1) {
-        print(articles[i].name);
+        print(articles[i]);
       }
     }
     return Scaffold(
@@ -56,6 +56,7 @@ class _UserScreenState extends State<UserScreen> {
           },
         ),
       ),
+      body: builListView(context),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
@@ -65,6 +66,32 @@ class _UserScreenState extends State<UserScreen> {
         currentIndex: 0, //New
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  Widget builListView(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(50),
+      itemCount: articles.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          height: 150,
+          color: Colors.blueGrey,
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              '${articles[index].name}',
+              style: TextStyle(fontSize: 30),
+            ),
+            const Divider(color: Colors.black),
+            Text('${articles[index].description}'),
+            const Divider(color: Colors.black),
+            Text('${articles[index].priceMin}'),
+          ]),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const Divider();
+      },
     );
   }
 }
