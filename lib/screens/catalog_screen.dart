@@ -11,7 +11,7 @@ class CatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articleService = ArticleService();
+    final articleService = Provider.of<ArticleService>(context, listen: false);
     articles = articleService.articles.cast<ArticleData>();
     List<ArticleData> articlesFinal = [];
     for (int i = 0; i < articles.length; i++) {
@@ -37,7 +37,7 @@ class CatalogScreen extends StatelessWidget {
   }
 
   ArticleService buildArticleService(BuildContext context) {
-    final articleService = ArticleService();
+    final articleService = Provider.of<ArticleService>(context);
     return articleService;
   }
 
