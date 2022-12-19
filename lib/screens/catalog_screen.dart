@@ -11,7 +11,6 @@ class CatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
     final articleService = Provider.of<ArticleService>(context, listen: false);
     articles = articleService.articles.cast<ArticleData>();
     List<ArticleData> articlesFinal = [];

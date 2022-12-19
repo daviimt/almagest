@@ -29,8 +29,6 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
-
     void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'user');
