@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
           'register': (_) => const RegisterScreen(),
           'user': (_) => const UserScreen(),
           'admin': (_) => const AdminScreen(),
+          'catalog': (_) => const CatalogScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(
