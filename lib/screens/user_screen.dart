@@ -29,6 +29,16 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = 0;
+
+    void _onItemTapped(int index) {
+      if (index == 0) {
+        Navigator.pushReplacementNamed(context, 'user');
+      } else {
+        Navigator.pushReplacementNamed(context, 'catalog');
+      }
+    }
+
     // final articleService = Provider.of<ArticleService>(context, listen: false);
     // articles = articleService.articles.cast<ArticleData>();
     for (int i = 0; i < articles.length; i++) {
@@ -54,6 +64,8 @@ class _UserScreenState extends State<UserScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
         ],
+        currentIndex: _selectedIndex, //New
+        onTap: _onItemTapped,
       ),
     );
   }

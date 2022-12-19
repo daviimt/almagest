@@ -11,9 +11,18 @@ class CatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = 0;
     final articleService = Provider.of<ArticleService>(context, listen: false);
     articles = articleService.articles.cast<ArticleData>();
     List<ArticleData> articlesFinal = [];
+    void _onItemTapped(int index) {
+      if (index == 0) {
+        Navigator.pushReplacementNamed(context, 'user');
+      } else {
+        Navigator.pushReplacementNamed(context, 'catalog');
+      }
+    }
+
     for (int i = 0; i < articles.length; i++) {
       articlesFinal.add(articles[i]);
     }
@@ -39,6 +48,8 @@ class CatalogScreen extends StatelessWidget {
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
         ],
+        currentIndex: _selectedIndex, //New
+        onTap: _onItemTapped,
       ),
     );
   }
