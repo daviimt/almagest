@@ -64,7 +64,7 @@ class _UserScreenState extends State<UserScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
         ],
-        currentIndex: _selectedIndex, //New
+        currentIndex: 0, //New
         onTap: _onItemTapped,
       ),
     );
