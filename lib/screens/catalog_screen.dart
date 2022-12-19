@@ -33,6 +33,11 @@ class CatalogScreen extends StatelessWidget {
         child:
             builListView(context, buildArticleService(context), articlesFinal),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
+      ]),
     );
   }
 
