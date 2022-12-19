@@ -4,6 +4,8 @@ import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../Search/search_delegate.dart';
+
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
 
@@ -55,6 +57,12 @@ class _UserScreenState extends State<UserScreen> {
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.search_outlined),
+              onPressed: () =>
+                  showSearch(context: context, delegate: MovieSearchDelegate()))
+        ],
       ),
       body: builListView(context),
       bottomNavigationBar: BottomNavigationBar(
