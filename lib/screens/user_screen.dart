@@ -48,6 +48,11 @@ class _UserScreenState extends State<UserScreen> {
           },
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
+      ]),
     );
   }
 }
