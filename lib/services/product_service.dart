@@ -80,7 +80,7 @@ class ProductService extends ChangeNotifier {
     notifyListeners();
 
     // ignore: unused_local_variable
-    final resp = await http.post(
+    final resp = await http.delete(
       url,
       headers: {
         'Content-type': 'application/json',
