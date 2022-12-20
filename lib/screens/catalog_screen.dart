@@ -1,19 +1,49 @@
 import 'package:almagest/Models/models.dart';
+import 'package:almagest/services/product_service.dart';
+import 'package:counter_button/counter_button.dart';
 import 'package:flutter/material.dart';
 import 'package:almagest/services/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import '../Search/search_delegate.dart';
 
-List<ArticleData> articles = [];
-
-class CatalogScreen extends StatelessWidget {
+class CatalogScreen extends StatefulWidget {
   const CatalogScreen({Key? key}) : super(key: key);
 
   @override
+  State<CatalogScreen> createState() => _CatalogScreenState();
+}
+
+class _CatalogScreenState extends State<CatalogScreen> {
+  final productService = ProductService();
+  final userService = UserService();
+  final authService = AuthService();
+  final articleService = ArticleService();
+
+  List<ProductData> products = [];
+  List<ArticleData> articles = [];
+
+  Future getProducts() async {
+    final UserData logged =
+        userService.getUser(authService.storage.read(key: 'id').toString());
+    final String idCompany = logged.company.toString();
+    await productService.getProducts(idCompany);
+    setState(() {
+      products = productService.products;
+    });
+    for (ProductData p in products) {
+      articles.add(articleService.getArticle(p.articleId.toString()));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final articleService = Provider.of<ArticleService>(context, listen: false);
-    articles = articleService.articles.cast<ArticleData>();
-    List<ArticleData> articlesFinal = [];
+    // ignore: no_leading_underscores_for_local_identifiers
     void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'user');
@@ -22,12 +52,9 @@ class CatalogScreen extends StatelessWidget {
       }
     }
 
-    for (int i = 0; i < articles.length; i++) {
-      articlesFinal.add(articles[i]);
-    }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Catalog'),
+        title: const Text('Products'),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.login_outlined),
@@ -36,57 +63,68 @@ class CatalogScreen extends StatelessWidget {
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.search_outlined),
+              onPressed: () =>
+                  showSearch(context: context, delegate: MovieSearchDelegate()))
+        ],
       ),
-      body: Center(
-        child:
-            builListView(context, buildArticleService(context), articlesFinal),
+      body: builListView(context, products),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add_box_outlined),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
+              icon: Icon(Icons.shopping_cart_outlined), label: 'Products'),
         ],
-        currentIndex: 1, //New
+        currentIndex: 0, //New
         onTap: _onItemTapped,
       ),
     );
   }
 
-  ArticleService buildArticleService(BuildContext context) {
-    final articleService = Provider.of<ArticleService>(context);
-    return articleService;
-  }
-
-  Widget buildArticleListTile(article) => ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        title: Text(article.id + ' ' + article.name),
-        subtitle: Text(article.description),
-      );
-
-  Widget builListView(
-          BuildContext context, ArticleService articleService, List articles) =>
-      ListView.separated(
-          itemBuilder: (context, index) {
-            final article = articles[index];
-            return Slidable(
-              startActionPane: ActionPane(
-                motion: const StretchMotion(),
+  int _counterValue = 0;
+  Widget builListView(BuildContext context, List articles) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(30),
+      itemCount: articles.length,
+      itemBuilder: (BuildContext context, index) {
+        return SizedBox(
+          height: 250,
+          child: Card(
+            elevation: 20,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: const Color(0xFF7BC043),
-                    foregroundColor: Colors.white,
-                    icon: Icons.add_box_outlined,
-                    label: 'Añadir',
-                  )
-                ],
-              ),
-              child: buildArticleListTile(article),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Divider();
-          },
-          itemCount: articles.length);
+                  Text('${articles[index].name}',
+                      style: const TextStyle(fontSize: 30)),
+                  const Divider(color: Colors.black),
+                  Text('${articles[index].description}',
+                      style: const TextStyle(fontSize: 20)),
+                  const Divider(color: Colors.black),
+                  CounterButton(
+                    loading: false,
+                    onChange: (min) {
+                      setState(() {
+                        _counterValue = min;
+                      });
+                    },
+                    count: _counterValue,
+                    countColor: Colors.purple,
+                    buttonColor: Colors.purpleAccent,
+                    progressColor: Colors.purpleAccent,
+                  ),
+                ]),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider();
+      },
+    );
+  }
 }

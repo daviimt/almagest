@@ -40,6 +40,31 @@ class UserService extends ChangeNotifier {
     return usuarios;
   }
 
+  Future<List<UserData>> getUser(String id) async {
+    final url = Uri.http(_baseUrl, '/public/api/user/$id');
+    String? token = await AuthService().readToken();
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    var user = Users.fromJson(decodedResp);
+    for (var i in user.data!) {
+      if (i.deleted == 0) {
+        usuarios.add(i);
+      }
+    }
+    isLoading = false;
+    notifyListeners();
+    return usuarios;
+  }
+
   Future postActivate(String id) async {
     final url = Uri.http(_baseUrl, '/public/api/activate', {'user_id': id});
     String? token = await AuthService().readToken();
