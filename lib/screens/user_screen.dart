@@ -133,10 +133,10 @@ class _UserScreenState extends State<UserScreen> {
     return ListView.separated(
       shrinkWrap: true,
       padding: const EdgeInsets.all(30),
-      itemCount: articles.length,
+      itemCount: articlesBuscar.length,
       itemBuilder: (BuildContext context, index) {
-        double min = double.parse('${articles[index].priceMin}');
-        double max = double.parse('${articles[index].priceMax}');
+        double min = double.parse('${articlesBuscar[index].priceMin}');
+        double max = double.parse('${articlesBuscar[index].priceMax}');
         double mid = ((min + max) / 2);
         double _counter;
         return Container(
@@ -146,10 +146,10 @@ class _UserScreenState extends State<UserScreen> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${articles[index].name}',
+                  Text('${articlesBuscar[index].name}',
                       style: TextStyle(fontSize: 20)),
                   const Divider(color: Colors.black),
-                  Text('${articles[index].description}',
+                  Text('${articlesBuscar[index].description}',
                       style: TextStyle(fontSize: 35),
                       textAlign: TextAlign.center),
                   const Divider(color: Colors.black),
