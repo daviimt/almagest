@@ -1,8 +1,6 @@
 import 'package:almagest/Models/models.dart';
-import 'package:almagest/screens/catalog_screen.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:counter_button/counter_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +50,7 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'user');
@@ -130,11 +129,10 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  @override
   Widget builListView(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(30),
       itemCount: articlesBuscar.length,
       itemBuilder: (BuildContext context, index) {
@@ -142,7 +140,7 @@ class _UserScreenState extends State<UserScreen> {
         double max = double.parse('${articlesBuscar[index].priceMax}');
         double mid = ((min + max) / 2);
         double _counter;
-        return Container(
+        return SizedBox(
           height: 250,
           child: Card(
             elevation: 20,
@@ -150,10 +148,10 @@ class _UserScreenState extends State<UserScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('${articlesBuscar[index].name}',
-                      style: TextStyle(fontSize: 20)),
+                      style: const TextStyle(fontSize: 20)),
                   const Divider(color: Colors.black),
                   Text('${articlesBuscar[index].description}',
-                      style: TextStyle(fontSize: 35),
+                      style: const TextStyle(fontSize: 35),
                       textAlign: TextAlign.center),
                   const Divider(color: Colors.black),
                   Row(
@@ -161,12 +159,12 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text(
                         'Price : $mid',
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.add_shopping_cart_sharp,
                           color: Colors.white,
                           size: 30,

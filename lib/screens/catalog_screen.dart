@@ -78,7 +78,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined), label: 'Products'),
+              icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
         ],
         currentIndex: 1, //New
         onTap: _onItemTapped,
