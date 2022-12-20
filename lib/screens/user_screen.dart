@@ -147,15 +147,19 @@ class _UserScreenState extends State<UserScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('${articles[index].name}',
-                      style: TextStyle(fontSize: 30)),
+                      style: TextStyle(fontSize: 20)),
                   const Divider(color: Colors.black),
                   Text('${articles[index].description}',
-                      style: TextStyle(fontSize: 20)),
+                      style: TextStyle(fontSize: 35),
+                      textAlign: TextAlign.center),
                   const Divider(color: Colors.black),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(mid.toString(), style: TextStyle(fontSize: 20)),
+                      Text(
+                        'Price : $mid',
+                        style: TextStyle(fontSize: 20),
+                      ),
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {},
