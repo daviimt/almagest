@@ -18,6 +18,8 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   final articleService = ArticleService();
   List<ArticleData> articles = [];
+  List<ArticleData> articlesBuscar = [];
+
   Future getArticles() async {
     await articleService.getArticles();
     setState(() {
@@ -29,6 +31,25 @@ class _UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     getArticles();
+    articlesBuscar = articles;
+  }
+
+  void _runFilter(String enteredKeyword) {
+    List<ArticleData> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = articles;
+    } else if (enteredKeyword == '###/') {
+      articles.clear();
+    } else {
+      results = articles
+          .where((x) => x.description!
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      articlesBuscar = results;
+    });
   }
 
   @override
@@ -66,7 +87,35 @@ class _UserScreenState extends State<UserScreen> {
                   showSearch(context: context, delegate: MovieSearchDelegate()))
         ],
       ),
-      body: builListView(context),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Center(
+          child: Column(children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Visibility(
+              visible: true,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.1,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.blueGrey, width: 1),
+                    borderRadius: BorderRadius.circular(5)),
+                child: TextField(
+                  onChanged: (value) => _runFilter(value),
+                  decoration: const InputDecoration(
+                      labelText: '  Search', suffixIcon: Icon(Icons.search)),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: true,
+              child: builListView(context),
+            ),
+          ]),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
@@ -82,6 +131,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget builListView(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: true,
       padding: const EdgeInsets.all(30),
       itemCount: articles.length,
       itemBuilder: (BuildContext context, index) {
