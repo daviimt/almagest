@@ -43,18 +43,32 @@ class MovieSearchDelegate extends SearchDelegate {
     } else {}
 
     final articleService = ArticleService();
-    List<ArticleData> articles = [];
-    Future getArticles() async {
-      await articleService.getArticles();
-    }
 
     return FutureBuilder(
       future: articleService.getArticles(),
       builder: (_, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) return _emptyContainer();
 
-        return Container();
+        final articles = snapshot.data;
+
+        return ListView.builder(
+          itemCount: articles.length,
+          itemBuilder: (_, int index) => _ArticleItem(articles[index]),
+        );
       },
+    );
+  }
+}
+
+class _ArticleItem extends StatelessWidget {
+  final ArticleData article;
+
+  const _ArticleItem(this.article);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(article.name!),
     );
   }
 }
