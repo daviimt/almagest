@@ -2,6 +2,7 @@ import 'package:almagest/Models/models.dart';
 import 'package:almagest/screens/catalog_screen.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:counter_button/counter_button.dart';
 import 'package:provider/provider.dart';
 
 import '../Search/search_delegate.dart';
@@ -41,11 +42,11 @@ class _UserScreenState extends State<UserScreen> {
 
     // final articleService = Provider.of<ArticleService>(context, listen: false);
     // articles = articleService.articles.cast<ArticleData>();
-    for (int i = 0; i < articles.length; i++) {
-      if (articles[i].deleted == 1) {
-        print(articles[i]);
-      }
-    }
+    // for (int i = 0; i < articles.length; i++) {
+    //   if (articles[i].deleted == 1) {
+    //     print(articles[i]);
+    //   }
+    // }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Articles'),
@@ -59,12 +60,12 @@ class _UserScreenState extends State<UserScreen> {
         ),
         actions: [
           IconButton(
-              icon: Icon(Icons.search_outlined),
+              icon: const Icon(Icons.search_outlined),
               onPressed: () =>
                   showSearch(context: context, delegate: MovieSearchDelegate()))
         ],
       ),
-      body: builListView(context),
+      body: builListView(context, articles),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
@@ -77,27 +78,45 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  Widget builListView(BuildContext context) {
+  int _counterValue = 0;
+  Widget builListView(BuildContext context, List articles) {
     return ListView.separated(
-      padding: const EdgeInsets.all(50),
+      padding: const EdgeInsets.all(30),
       itemCount: articles.length,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (BuildContext context, index) {
+        int min = int.parse('${articles[index].priceMin}');
+        int max = int.parse('${articles[index].priceMax}');
+        // int mid = ((min + max) / 2);
         return Container(
-          height: 150,
-          color: Colors.blueGrey,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              '${articles[index].name}',
-              style: TextStyle(fontSize: 30),
-            ),
-            const Divider(color: Colors.black),
-            Text('${articles[index].description}'),
-            const Divider(color: Colors.black),
-            Text('${articles[index].priceMin}'),
-          ]),
+          height: 250,
+          child: Card(
+            elevation: 20,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('${articles[index].name}',
+                      style: TextStyle(fontSize: 30)),
+                  const Divider(color: Colors.black),
+                  Text('${articles[index].description}',
+                      style: TextStyle(fontSize: 20)),
+                  const Divider(color: Colors.black),
+                  CounterButton(
+                    loading: false,
+                    onChange: (min) {
+                      setState(() {
+                        _counterValue = min;
+                      });
+                    },
+                    count: _counterValue,
+                    countColor: Colors.purple,
+                    buttonColor: Colors.purpleAccent,
+                    progressColor: Colors.purpleAccent,
+                  ),
+                ]),
+          ),
         );
       },
-      separatorBuilder: (context, index) {
+      separatorBuilder: (BuildContext context, int index) {
         return const Divider();
       },
     );
