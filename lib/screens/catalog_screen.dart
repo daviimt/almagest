@@ -23,16 +23,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
   List<ArticleData> articles = [];
 
   Future getProducts() async {
-    final UserData logged =
-        userService.getUser(authService.storage.read(key: 'id').toString());
-    final String idCompany = logged.company.toString();
-    await productService.getProducts(idCompany);
+    await productService.getProducts();
     setState(() {
       products = productService.products;
+      print(products);
     });
-    for (ProductData p in products) {
-      articles.add(articleService.getArticle(p.articleId.toString()));
-    }
   }
 
   @override
@@ -50,6 +45,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
       } else {
         Navigator.pushReplacementNamed(context, 'catalog');
       }
+    }
+
+    for (int i = 0; i < products.length; i++) {
+      print(products[i]);
     }
 
     return Scaffold(
