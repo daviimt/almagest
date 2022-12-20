@@ -38,8 +38,6 @@ class _UserScreenState extends State<UserScreen> {
     List<ArticleData> results = [];
     if (enteredKeyword.isEmpty) {
       results = articles;
-    } else if (enteredKeyword == '###/') {
-      articles.clear();
     } else {
       results = articles
           .where((x) => x.description!
@@ -90,30 +88,34 @@ class _UserScreenState extends State<UserScreen> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Center(
-          child: Column(children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Visibility(
-              visible: true,
-              child: Container(
-                width: MediaQuery.of(context).size.width / 1.1,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.blueGrey, width: 1),
-                    borderRadius: BorderRadius.circular(5)),
-                child: TextField(
-                  onChanged: (value) => _runFilter(value),
-                  decoration: const InputDecoration(
-                      labelText: '  Search', suffixIcon: Icon(Icons.search)),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.blueGrey, width: 1),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: TextField(
+                    onChanged: (value) => _runFilter(value),
+                    decoration: const InputDecoration(
+                      labelText: '    Search',
+                      suffixIcon: Icon(Icons.search),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: true,
-              child: builListView(context),
-            ),
-          ]),
+              SizedBox(
+                child: Container(
+                  child: builListView(context),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -132,6 +134,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget builListView(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(30),
       itemCount: articlesBuscar.length,
       itemBuilder: (BuildContext context, index) {
