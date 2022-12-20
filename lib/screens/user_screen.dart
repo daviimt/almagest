@@ -3,6 +3,7 @@ import 'package:almagest/screens/catalog_screen.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:counter_button/counter_button.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
 import '../Search/search_delegate.dart';
@@ -65,7 +66,7 @@ class _UserScreenState extends State<UserScreen> {
                   showSearch(context: context, delegate: MovieSearchDelegate()))
         ],
       ),
-      body: builListView(context, articles),
+      body: builListView(context),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
@@ -78,15 +79,16 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  int _counterValue = 0;
-  Widget builListView(BuildContext context, List articles) {
+  @override
+  Widget builListView(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(30),
       itemCount: articles.length,
       itemBuilder: (BuildContext context, index) {
-        int min = int.parse('${articles[index].priceMin}');
-        int max = int.parse('${articles[index].priceMax}');
-        // int mid = ((min + max) / 2);
+        double min = double.parse('${articles[index].priceMin}');
+        double max = double.parse('${articles[index].priceMax}');
+        double mid = ((min + max) / 2);
+        double _counter;
         return Container(
           height: 250,
           child: Card(
@@ -100,17 +102,35 @@ class _UserScreenState extends State<UserScreen> {
                   Text('${articles[index].description}',
                       style: TextStyle(fontSize: 20)),
                   const Divider(color: Colors.black),
-                  CounterButton(
-                    loading: false,
-                    onChange: (min) {
-                      setState(() {
-                        _counterValue = min;
-                      });
-                    },
-                    count: _counterValue,
-                    countColor: Colors.purple,
-                    buttonColor: Colors.purpleAccent,
-                    progressColor: Colors.purpleAccent,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(mid.toString(), style: TextStyle(fontSize: 20)),
+                      const Divider(color: Colors.black),
+                      GFIconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.add_shopping_cart_sharp,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                    //   children: <Widget>[
+                    //   counter > 0
+                    //       ? IconButton(
+                    //           icon: const Icon(
+                    //             Icons.remove,
+                    //           ),
+                    //           onPressed: () {
+                    //             counter++;
+                    //           })
+                    //       : Container(),
+                    //   Text(
+                    //     "$counter",
+                    //     style: TextStyle(fontSize: 20),
+                    //   )
+                    // ]
                   ),
                 ]),
           ),
