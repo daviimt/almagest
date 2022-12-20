@@ -80,7 +80,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Products'),
         ],
-        currentIndex: 0, //New
+        currentIndex: 1, //New
         onTap: _onItemTapped,
       ),
     );
