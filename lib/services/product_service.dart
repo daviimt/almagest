@@ -21,7 +21,7 @@ class ProductService extends ChangeNotifier {
     print(id);
 
     final Map<String, dynamic> authData = {
-      'email': id,
+      'id': 1,
     };
 
     isLoading = true;
@@ -46,12 +46,12 @@ class ProductService extends ChangeNotifier {
     return products;
   }
 
-  createProduct(String articleId, String price, String familyId) async {
+  addProduct(
+      String articleId, String price, String familyId, int companyId) async {
     String? token = await storage.read(key: 'token') ?? '';
-    String? id = await storage.read(key: 'id') ?? '';
     final Map<String, dynamic> authData = {
       'article_id': articleId,
-      'company_id': id,
+      'company_id': companyId,
       'empriceail': price,
       'family_id': familyId,
     };
@@ -62,7 +62,7 @@ class ProductService extends ChangeNotifier {
         headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          "Authorization": "Some $token"
+          "Authorization": "Bearer $token"
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);

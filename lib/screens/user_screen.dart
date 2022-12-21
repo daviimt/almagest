@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:almagest/Models/models.dart';
+import 'package:almagest/Models/user_alone.dart';
 import 'package:almagest/services/product_service.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +18,24 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   final articleService = ArticleService();
   final productService = ProductService();
+  final userService = UserService();
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
+  List<UserAlone> user = [];
 
   Future getArticles() async {
     await articleService.getArticles();
     setState(() {
       articles = articleService.articles;
       articlesBuscar = articles;
+    });
+  }
+
+  Future getUser(String id) async {
+    await userService.getUser(id);
+    setState(() {
+      user = userService.usuario;
+      print(user);
     });
   }
 
@@ -163,10 +176,11 @@ class _UserScreenState extends State<UserScreen> {
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
-                          productService.createProduct(
+                          productService.addProduct(
                               articlesBuscar[index].id.toString(),
                               mid.toString(),
-                              articlesBuscar[index].familyId.toString());
+                              articlesBuscar[index].familyId.toString(),
+                              1);
                           articlesBuscar.removeAt(index);
                         },
                         icon: const Icon(

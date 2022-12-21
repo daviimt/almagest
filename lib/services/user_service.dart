@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:almagest/Models/user_alone.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class UserService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   bool isLoading = true;
   final List<UserData> usuarios = [];
+  final List<UserAlone> usuario = [];
 
   UserService();
 
@@ -40,7 +42,7 @@ class UserService extends ChangeNotifier {
     return usuarios;
   }
 
-  Future<List<UserData>> getUser(String id) async {
+  Future<List<UserAlone>> getUser(String id) async {
     final url = Uri.http(_baseUrl, '/public/api/user/$id');
     String? token = await AuthService().readToken();
     isLoading = true;
@@ -54,15 +56,13 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    var user = Users.fromJson(decodedResp);
+    var user = UserAlone.fromJson(decodedResp);
     for (var i in user.data!) {
-      if (i.deleted == 0) {
-        usuarios.add(i);
-      }
+      usuario.add(i);
     }
     isLoading = false;
     notifyListeners();
-    return usuarios;
+    return usuario;
   }
 
   Future postActivate(String id) async {

@@ -126,10 +126,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('${articles[index].name}',
-                        style: const TextStyle(fontSize: 30)),
-                    const Divider(color: Colors.black),
-                    Text('${articles[index].description}',
+                    Text('${productos[index].compamyDescription}',
                         style: const TextStyle(fontSize: 20)),
                     const Divider(color: Colors.black),
                     CounterButton(

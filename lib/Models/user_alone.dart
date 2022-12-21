@@ -1,13 +1,18 @@
 class UserAlone {
   bool? success;
-  UserAloneData? data;
+  List<UserAlone>? data;
   String? message;
 
   UserAlone({this.success, this.data, this.message});
 
   UserAlone.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? UserAloneData.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <UserAlone>[];
+      json['data'].forEach((v) {
+        data!.add(UserAlone.fromJson(v));
+      });
+    }
     message = json['message'];
   }
 
@@ -15,7 +20,8 @@ class UserAlone {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['success'] = success;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      ;
     }
     data['message'] = message;
     return data;
