@@ -24,6 +24,7 @@ class _UserScreenState extends State<UserScreen> {
     await articleService.getArticles();
     setState(() {
       articles = articleService.articles;
+      articlesBuscar = articles;
     });
   }
 
@@ -31,12 +32,13 @@ class _UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     getArticles();
-    articlesBuscar = articles;
   }
 
   void _runFilter(String enteredKeyword) {
     List<ArticleData> results = [];
+    print('entra FILTRO');
     if (enteredKeyword.isEmpty) {
+      print('eENTRA');
       results = articles;
     } else {
       results = articles
@@ -86,39 +88,44 @@ class _UserScreenState extends State<UserScreen> {
                   showSearch(context: context, delegate: MovieSearchDelegate()))
         ],
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.blueGrey, width: 1),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: TextField(
-                    onChanged: (value) => _runFilter(value),
-                    decoration: const InputDecoration(
-                      labelText: '    Search',
-                      suffixIcon: Icon(Icons.search),
+      body: articleService.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    SizedBox(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.1,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border:
+                                Border.all(color: Colors.blueGrey, width: 1),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: TextField(
+                          onChanged: (value) => _runFilter(value),
+                          decoration: const InputDecoration(
+                            labelText: '    Search',
+                            suffixIcon: Icon(Icons.search),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      child: Container(
+                        child: builListView(context),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                child: Container(
-                  child: builListView(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
