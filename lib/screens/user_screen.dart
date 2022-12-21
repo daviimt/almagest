@@ -183,7 +183,12 @@ class _UserScreenState extends State<UserScreen> {
                             mid.toString(),
                             articlesBuscar[index].familyId.toString(),
                           );
-                          articlesBuscar.removeAt(index);
+                          setState(() {
+                            articles.removeWhere((element) =>
+                                (element == articlesBuscar[index]));
+                            articlesBuscar.removeWhere((element) =>
+                                (element == articlesBuscar[index]));
+                          });
                         },
                         icon: const Icon(
                           Icons.add_shopping_cart_sharp,
