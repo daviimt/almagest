@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:almagest/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -18,7 +19,7 @@ class ProductService extends ChangeNotifier {
     // String? token = await storage.read(key: 'token') ?? '';
     String? token = await AuthService().readToken();
     String? id = await storage.read(key: 'id') ?? '';
-    print(id);
+    print("inproducservice-> " + id);
 
     final Map<String, dynamic> authData = {
       'id': 1,
@@ -47,7 +48,7 @@ class ProductService extends ChangeNotifier {
   }
 
   addProduct(
-      String articleId, String price, String familyId, int companyId) async {
+      String articleId, String price, String familyId, String companyId) async {
     String? token = await storage.read(key: 'token') ?? '';
     final Map<String, dynamic> authData = {
       'article_id': articleId,

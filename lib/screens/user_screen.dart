@@ -21,7 +21,7 @@ class _UserScreenState extends State<UserScreen> {
   final userService = UserService();
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
-  List<UserAlone> user = [];
+  String user = "";
 
   Future getArticles() async {
     await articleService.getArticles();
@@ -32,10 +32,9 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Future getUser(String id) async {
-    await userService.getUser(id);
+    await userService.getUser();
     setState(() {
-      user = userService.usuario;
-      print(user);
+      user = userService.getUser() as String;
     });
   }
 
@@ -43,6 +42,7 @@ class _UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     getArticles();
+    getUser(517.toString());
   }
 
   void _runFilter(String enteredKeyword) {
@@ -180,7 +180,7 @@ class _UserScreenState extends State<UserScreen> {
                               articlesBuscar[index].id.toString(),
                               mid.toString(),
                               articlesBuscar[index].familyId.toString(),
-                              1);
+                              user);
                           articlesBuscar.removeAt(index);
                         },
                         icon: const Icon(
@@ -190,21 +190,6 @@ class _UserScreenState extends State<UserScreen> {
                         ),
                       ),
                     ],
-                    //   children: <Widget>[
-                    //   counter > 0
-                    //       ? IconButton(
-                    //           icon: const Icon(
-                    //             Icons.remove,
-                    //           ),
-                    //           onPressed: () {
-                    //             counter++;
-                    //           })
-                    //       : Container(),
-                    //   Text(
-                    //     "$counter",
-                    //     style: TextStyle(fontSize: 20),
-                    //   )
-                    // ]
                   ),
                 ]),
           ),

@@ -1,18 +1,19 @@
 import 'dart:convert';
 
+import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
 
 import '../Models/articles.dart';
-import 'auth_service.dart';
 
 class ArticleService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   final storage = const FlutterSecureStorage();
   final List<ArticleData> articles = [];
   bool isLoading = true;
+  final companyId = UserService().getUser();
 
   getArticles() async {
     articles.clear();
@@ -38,12 +39,12 @@ class ArticleService extends ChangeNotifier {
     return articles;
   }
 
-  getArticle(String id) async {
+  getArticle(companyId) async {
     String? token = await storage.read(key: 'token') ?? '';
     isLoading = true;
     notifyListeners();
     final url =
-        Uri.http(_baseUrl, '/public/api/mostrarArt', {'article_id': id});
+        Uri.http(_baseUrl, '/public/api/mostrarArt', {'article_id': companyId});
     final resp = await http.post(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',

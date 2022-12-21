@@ -1,90 +1,64 @@
 class UserAlone {
-  bool? success;
-  List<UserAlone>? data;
-  String? message;
-
-  UserAlone({this.success, this.data, this.message});
-
-  UserAlone.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    if (json['data'] != null) {
-      data = <UserAlone>[];
-      json['data'].forEach((v) {
-        data!.add(UserAlone.fromJson(v));
-      });
-    }
-    message = json['message'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-      ;
-    }
-    data['message'] = message;
-    return data;
-  }
-}
-
-class UserAloneData {
   int? id;
   String? firstname;
   String? secondname;
-  int? companyId;
-  int? actived;
   String? email;
+  int? companyId;
   String? type;
   int? emailConfirmed;
-  int? deleted;
+  int? actived;
+  String? code;
   int? iscontact;
-  String? company;
+  int? deleted;
   String? createdAt;
+  String? updatedAt;
 
-  UserAloneData(
+  UserAlone(
       {this.id,
       this.firstname,
       this.secondname,
-      this.companyId,
-      this.actived,
       this.email,
+      this.companyId,
       this.type,
       this.emailConfirmed,
-      this.deleted,
+      this.actived,
+      this.code,
       this.iscontact,
-      this.company,
-      this.createdAt});
+      this.deleted,
+      this.createdAt,
+      this.updatedAt});
 
-  UserAloneData.fromJson(Map<String, dynamic> json) {
+  UserAlone.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstname = json['firstname'];
     secondname = json['secondname'];
-    companyId = json['company_id'];
-    actived = json['actived'];
     email = json['email'];
+    companyId = json['company_id'];
     type = json['type'];
     emailConfirmed = json['email_confirmed'];
-    deleted = json['deleted'];
+    actived = json['actived'];
+    code = json['code'];
     iscontact = json['iscontact'];
-    company = json['company'];
+    deleted = json['deleted'];
     createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['firstname'] = firstname;
-    data['secondname'] = secondname;
-    data['company_id'] = companyId;
-    data['actived'] = actived;
-    data['email'] = email;
-    data['type'] = type;
-    data['email_confirmed'] = emailConfirmed;
-    data['deleted'] = deleted;
-    data['iscontact'] = iscontact;
-    data['company'] = company;
-    data['created_at'] = createdAt;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['firstname'] = this.firstname;
+    data['secondname'] = this.secondname;
+    data['email'] = this.email;
+    data['company_id'] = this.companyId;
+    data['type'] = this.type;
+    data['email_confirmed'] = this.emailConfirmed;
+    data['actived'] = this.actived;
+    data['code'] = this.code;
+    data['iscontact'] = this.iscontact;
+    data['deleted'] = this.deleted;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

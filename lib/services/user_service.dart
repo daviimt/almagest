@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:almagest/Models/user_alone.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:almagest/Models/models.dart';
@@ -13,9 +14,8 @@ class UserService extends ChangeNotifier {
   final String _baseUrl = 'semillero.allsites.es';
   bool isLoading = true;
   final List<UserData> usuarios = [];
-  final List<UserAlone> usuario = [];
-
-  UserService();
+  String usuario = "";
+  final storage = const FlutterSecureStorage();
 
   Future<List<UserData>> getUsers() async {
     final url = Uri.http(_baseUrl, '/public/api/users');
@@ -42,9 +42,11 @@ class UserService extends ChangeNotifier {
     return usuarios;
   }
 
-  Future<List<UserAlone>> getUser(String id) async {
-    final url = Uri.http(_baseUrl, '/public/api/user/$id');
+  getUser() async {
     String? token = await AuthService().readToken();
+    String? id = await AuthService().readId();
+
+    final url = Uri.http(_baseUrl, '/public/api/user/517');
     isLoading = true;
     notifyListeners();
     final resp = await http.get(
@@ -56,13 +58,18 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    var user = UserAlone.fromJson(decodedResp);
-    for (var i in user.data!) {
-      usuario.add(i);
-    }
+    print(decodedResp);
+    var usuario = UserAlone.fromJson(decodedResp);
+    await storage.write(
+        key: 'company_id', value: decodedResp['data']['company_id'].toString());
     isLoading = false;
     notifyListeners();
-    return usuario;
+    print(decodedResp['company_id']);
+    return decodedResp['company_id'];
+  }
+
+  readCompany_id() async {
+    return await storage.read(key: 'company_id') ?? '';
   }
 
   Future postActivate(String id) async {
