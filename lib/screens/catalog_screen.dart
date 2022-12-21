@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import '../Search/search_delegate.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({Key? key}) : super(key: key);
@@ -64,12 +63,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.search_outlined),
-              onPressed: () =>
-                  showSearch(context: context, delegate: MovieSearchDelegate()))
-        ],
       ),
       body: builListView(context, productos),
       floatingActionButton: FloatingActionButton(

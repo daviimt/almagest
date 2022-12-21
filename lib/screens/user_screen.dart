@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
-import '../Search/search_delegate.dart';
-
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
 
@@ -36,9 +34,7 @@ class _UserScreenState extends State<UserScreen> {
 
   void _runFilter(String enteredKeyword) {
     List<ArticleData> results = [];
-    print('entra FILTRO');
     if (enteredKeyword.isEmpty) {
-      print('eENTRA');
       results = articles;
     } else {
       results = articles
@@ -81,12 +77,6 @@ class _UserScreenState extends State<UserScreen> {
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.search_outlined),
-              onPressed: () =>
-                  showSearch(context: context, delegate: MovieSearchDelegate()))
-        ],
       ),
       body: articleService.isLoading
           ? const Center(
