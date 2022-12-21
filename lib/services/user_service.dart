@@ -59,11 +59,11 @@ class UserService extends ChangeNotifier {
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
     var usuario = UserAlone.fromJson(decodedResp);
-    await storage.write(
-        key: 'company_id', value: decodedResp['data']['company_id'].toString());
+    var data = UserData.fromJson(decodedResp);
+    await storage.write(key: 'company_id', value: data.companyId.toString());
     isLoading = false;
     notifyListeners();
-    return decodedResp['data']['company_id'].toString();
+    return data.companyId.toString();
   }
 
   readCompany_id() async {
