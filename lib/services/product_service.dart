@@ -46,12 +46,12 @@ class ProductService extends ChangeNotifier {
     return products;
   }
 
-  createProduct(
-      String articleId, String companyId, String price, String familyId) async {
+  createProduct(String articleId, String price, String familyId) async {
     String? token = await storage.read(key: 'token') ?? '';
+    String? id = await storage.read(key: 'id') ?? '';
     final Map<String, dynamic> authData = {
       'article_id': articleId,
-      'company_id': companyId,
+      'company_id': id,
       'empriceail': price,
       'family_id': familyId,
     };

@@ -1,8 +1,10 @@
 import 'package:almagest/Models/models.dart';
 import 'package:almagest/services/product_service.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:counter_button/counter_button.dart';
 import 'package:flutter/material.dart';
 import 'package:almagest/services/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import '../Search/search_delegate.dart';
 
@@ -19,14 +21,14 @@ class _CatalogScreenState extends State<CatalogScreen> {
   final authService = AuthService();
   final articleService = ArticleService();
 
-  List<ProductData> products = [];
+  List<ProductData> productos = [];
   List<ArticleData> articles = [];
 
   Future getProducts() async {
     await productService.getProducts();
     setState(() {
-      products = productService.products;
-      print(products);
+      productos = productService.products;
+      print(productos);
     });
   }
 
@@ -47,8 +49,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
       }
     }
 
-    for (int i = 0; i < products.length; i++) {
-      print(products[i]);
+    for (int i = 0; i < productos.length; i++) {
+      print(productos[i]);
     }
 
     return Scaffold(
@@ -69,7 +71,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                   showSearch(context: context, delegate: MovieSearchDelegate()))
         ],
       ),
-      body: builListView(context, products),
+      body: builListView(context, productos),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add_box_outlined),
@@ -92,32 +94,65 @@ class _CatalogScreenState extends State<CatalogScreen> {
       padding: const EdgeInsets.all(30),
       itemCount: articles.length,
       itemBuilder: (BuildContext context, index) {
-        return SizedBox(
-          height: 250,
-          child: Card(
-            elevation: 20,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('${articles[index].name}',
-                      style: const TextStyle(fontSize: 30)),
-                  const Divider(color: Colors.black),
-                  Text('${articles[index].description}',
-                      style: const TextStyle(fontSize: 20)),
-                  const Divider(color: Colors.black),
-                  CounterButton(
-                    loading: false,
-                    onChange: (min) {
+        return Slidable(
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (BuildContext _) async {
+                  await CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.warning,
+                    title: 'Confirmar',
+                    text: '¿Estás seguro de eliminar el producto seleccionado?',
+                    showCancelBtn: true,
+                    confirmBtnColor: Colors.purple,
+                    confirmBtnText: 'Eliminar',
+                    onConfirmBtnTap: () {
                       setState(() {
-                        _counterValue = min;
+                        productService.deleteProduct(
+                            productos[index].articleId.toString());
+                        productos.removeAt(index);
                       });
                     },
-                    count: _counterValue,
-                    countColor: Colors.purple,
-                    buttonColor: Colors.purpleAccent,
-                    progressColor: Colors.purpleAccent,
-                  ),
-                ]),
+                    onCancelBtnTap: () => Navigator.pop(context),
+                    cancelBtnText: 'Cancelar',
+                  );
+                },
+                backgroundColor: const Color(0xFFFE4A49),
+                foregroundColor: Colors.white,
+                icon: Icons.delete,
+                label: 'Eliminar',
+              ),
+            ],
+          ),
+          child: SizedBox(
+            height: 250,
+            child: Card(
+              elevation: 20,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('${articles[index].name}',
+                        style: const TextStyle(fontSize: 30)),
+                    const Divider(color: Colors.black),
+                    Text('${articles[index].description}',
+                        style: const TextStyle(fontSize: 20)),
+                    const Divider(color: Colors.black),
+                    CounterButton(
+                      loading: false,
+                      onChange: (min) {
+                        setState(() {
+                          _counterValue = min;
+                        });
+                      },
+                      count: _counterValue,
+                      countColor: Colors.purple,
+                      buttonColor: Colors.purpleAccent,
+                      progressColor: Colors.purpleAccent,
+                    ),
+                  ]),
+            ),
           ),
         );
       },

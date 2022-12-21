@@ -1,4 +1,5 @@
 import 'package:almagest/Models/models.dart';
+import 'package:almagest/services/product_service.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -15,6 +16,7 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   final articleService = ArticleService();
+  final productService = ProductService();
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
 
@@ -163,7 +165,13 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       const Divider(color: Colors.black),
                       GFIconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          productService.createProduct(
+                              articlesBuscar[index].id.toString(),
+                              mid.toString(),
+                              articlesBuscar[index].familyId.toString());
+                          articlesBuscar.removeAt(index);
+                        },
                         icon: const Icon(
                           Icons.add_shopping_cart_sharp,
                           color: Colors.white,
