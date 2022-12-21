@@ -33,8 +33,9 @@ class _UserScreenState extends State<UserScreen> {
 
   Future getUser(String id) async {
     await userService.getUser();
+    String companite = await userService.getUser() as String;
     setState(() {
-      user = userService.getUser() as String;
+      user = companite;
     });
   }
 
