@@ -59,7 +59,7 @@ class ProductService extends ChangeNotifier {
       'family_id': familyId,
     };
     isLoading = true;
-    print(authData);
+
     final url = Uri.http(_baseUrl, '/public/api/products');
 
     final resp = await http.post(url,
@@ -70,7 +70,7 @@ class ProductService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp);
+
     isLoading = false;
     notifyListeners();
     return decodedResp['data']['id'].toString();
