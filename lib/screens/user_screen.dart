@@ -177,11 +177,12 @@ class _UserScreenState extends State<UserScreen> {
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
+                          print(user);
                           productService.addProduct(
-                              articlesBuscar[index].id.toString(),
-                              mid.toString(),
-                              articlesBuscar[index].familyId.toString(),
-                              user);
+                            articlesBuscar[index].id.toString(),
+                            mid.toString(),
+                            articlesBuscar[index].familyId.toString(),
+                          );
                           articlesBuscar.removeAt(index);
                         },
                         icon: const Icon(

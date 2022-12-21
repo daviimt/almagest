@@ -47,17 +47,20 @@ class ProductService extends ChangeNotifier {
     return products;
   }
 
-  addProduct(
-      String articleId, String price, String familyId, String companyId) async {
+  Future<String> addProduct(
+      String articleId, String price, String familyId) async {
     String? token = await storage.read(key: 'token') ?? '';
+    String? companyId = await UserService().readCompany_id();
+
     final Map<String, dynamic> authData = {
       'article_id': articleId,
       'company_id': companyId,
-      'empriceail': price,
+      'price': price,
       'family_id': familyId,
     };
-
-    final url = Uri.http(_baseUrl, '/public/api/products', {});
+    isLoading = true;
+    print(authData);
+    final url = Uri.http(_baseUrl, '/public/api/products');
 
     final resp = await http.post(url,
         headers: {
@@ -67,10 +70,10 @@ class ProductService extends ChangeNotifier {
         },
         body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
-    if (decodedResp['success'] == true) {
-      return decodedResp['message'];
-    }
+    print(decodedResp);
+    isLoading = false;
+    notifyListeners();
+    return decodedResp['data']['id'].toString();
   }
 
   deleteProduct(String id) async {

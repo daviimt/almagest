@@ -46,7 +46,7 @@ class UserService extends ChangeNotifier {
     String? token = await AuthService().readToken();
     String? id = await AuthService().readId();
 
-    final url = Uri.http(_baseUrl, '/public/api/user/517');
+    final url = Uri.http(_baseUrl, '/public/api/user/$id');
     isLoading = true;
     notifyListeners();
     final resp = await http.get(
