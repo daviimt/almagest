@@ -2,6 +2,7 @@ import 'package:almagest/Models/models.dart';
 import 'package:almagest/services/product_service.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
@@ -176,10 +177,20 @@ class _UserScreenState extends State<UserScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        'Price : $mid',
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          width: 150,
+                          height: 50,
+                          child: SpinBox(
+                              min: min,
+                              max: max,
+                              step: 0.1,
+                              readOnly: true,
+                              decimals: 2,
+                              value: mid,
+                              onChanged: (value) {
+                                mid = value;
+                              })),
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
