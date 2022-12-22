@@ -97,16 +97,23 @@ class _UserScreenState extends State<UserScreen> {
     // }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Articles'),
+        title: Row(children: [
+          IconButton(
+            icon: const Icon(Icons.login_outlined),
+            onPressed: () {
+              Provider.of<AuthService>(context, listen: false).logout();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+          ),
+          Text(
+            'Articles',
+          ),
+          Text(
+            '$cont/5',
+            style: const TextStyle(fontSize: 30),
+          ),
+        ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
         centerTitle: true,
-        actions: [Text('$cont/5')],
-        leading: IconButton(
-          icon: const Icon(Icons.login_outlined),
-          onPressed: () {
-            Provider.of<AuthService>(context, listen: false).logout();
-            Navigator.pushReplacementNamed(context, 'login');
-          },
-        ),
       ),
       body: articleService.isLoading
           ? const Center(
