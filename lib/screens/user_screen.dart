@@ -16,15 +16,23 @@ class _UserScreenState extends State<UserScreen> {
   final articleService = ArticleService();
   final productService = ProductService();
   final userService = UserService();
+  List<ProductData> products = [];
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
   String user = "";
 
   Future getArticles() async {
     await articleService.getArticles();
+    await productService.getProducts();
     setState(() {
       articles = articleService.articles;
+      products = productService.products;
+
       articlesBuscar = articles;
+      for (int i = 0; i < products.length; i++) {
+        articlesBuscar
+            .removeWhere((element) => (element.id == products[i].articleId));
+      }
     });
   }
 
@@ -39,6 +47,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
+    print('iniciando');
     getArticles();
     getUser(517.toString());
   }
