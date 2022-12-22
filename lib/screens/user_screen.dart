@@ -3,6 +3,7 @@ import 'package:almagest/services/product_service.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,8 @@ class _UserScreenState extends State<UserScreen> {
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
   String user = "";
+  int cont = 0;
+  bool desactivate = true;
 
   Future getArticles() async {
     await articleService.getArticles();
@@ -28,6 +31,10 @@ class _UserScreenState extends State<UserScreen> {
     setState(() {
       articles = articleService.articles;
       products = productService.products;
+      cont = products.length;
+      if (cont >= 5) {
+        desactivate = false;
+      }
 
       articlesBuscar = articles;
       for (int i = 0; i < products.length; i++) {
@@ -37,7 +44,7 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-  Future getUser(String id) async {
+  Future getUser() async {
     await userService.getUser();
     String companie = await userService.getUser() as String;
     setState(() {
@@ -51,7 +58,7 @@ class _UserScreenState extends State<UserScreen> {
     // ignore: avoid_print
     print('iniciando');
     getArticles();
-    getUser(517.toString());
+    getUser();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -194,17 +201,22 @@ class _UserScreenState extends State<UserScreen> {
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
-                          productService.addProduct(
-                            articlesBuscar[index].id.toString(),
-                            mid.toString(),
-                            articlesBuscar[index].familyId.toString(),
-                          );
-                          setState(() {
-                            // articles.removeWhere((element) =>
-                            //     (element == articlesBuscar[index]));
-                            articlesBuscar.removeWhere((element) =>
-                                (element == articlesBuscar[index]));
-                          });
+                          if (cont < 5) {
+                            productService.addProduct(
+                              articlesBuscar[index].id.toString(),
+                              mid.toString(),
+                              articlesBuscar[index].familyId.toString(),
+                            );
+                            cont++;
+                            setState(() {
+                              // articles.removeWhere((element) =>
+                              //     (element == articlesBuscar[index]));
+                              articlesBuscar.removeWhere((element) =>
+                                  (element == articlesBuscar[index]));
+                            });
+                          } else {
+                            customToast('Elements limit reached', context);
+                          }
                         },
                         icon: const Icon(
                           Icons.add_shopping_cart_sharp,
@@ -221,6 +233,20 @@ class _UserScreenState extends State<UserScreen> {
       separatorBuilder: (BuildContext context, int index) {
         return const Divider();
       },
+    );
+  }
+
+  void customToast(String s, BuildContext context) {
+    showToast(
+      s,
+      context: context,
+      animation: StyledToastAnimation.scale,
+      reverseAnimation: StyledToastAnimation.fade,
+      position: StyledToastPosition.top,
+      animDuration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 4),
+      curve: Curves.elasticOut,
+      reverseCurve: Curves.linear,
     );
   }
 }
