@@ -200,8 +200,8 @@ class _UserScreenState extends State<UserScreen> {
                             articlesBuscar[index].familyId.toString(),
                           );
                           setState(() {
-                            articles.removeWhere((element) =>
-                                (element == articlesBuscar[index]));
+                            // articles.removeWhere((element) =>
+                            //     (element == articlesBuscar[index]));
                             articlesBuscar.removeWhere((element) =>
                                 (element == articlesBuscar[index]));
                           });
