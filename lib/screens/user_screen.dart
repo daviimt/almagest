@@ -175,6 +175,8 @@ class _UserScreenState extends State<UserScreen> {
         double min = double.parse('${articlesBuscar[index].priceMin}');
         double max = double.parse('${articlesBuscar[index].priceMax}');
         double mid = ((min + max) / 2);
+        double wt = double.parse('${articlesBuscar[index].weight}');
+        print(articlesBuscar[index].weight);
         return SizedBox(
           height: 250,
           child: Card(
@@ -182,8 +184,15 @@ class _UserScreenState extends State<UserScreen> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${articlesBuscar[index].name}',
-                      style: const TextStyle(fontSize: 20)),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text('${articlesBuscar[index].name}',
+                            style: const TextStyle(fontSize: 20)),
+                        if (wt > 0.0)
+                          Text('${articlesBuscar[index].weight}Kg',
+                              style: const TextStyle(fontSize: 20))
+                      ]),
                   const Divider(color: Colors.black),
                   Text('${articlesBuscar[index].description}',
                       style: const TextStyle(fontSize: 35),
