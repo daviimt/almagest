@@ -19,10 +19,12 @@ class ProductService extends ChangeNotifier {
     // String? token = await storage.read(key: 'token') ?? '';
     String? token = await AuthService().readToken();
     String? id = await storage.read(key: 'id') ?? '';
+    String? companyId = await UserService().readCompany_id();
     print("inproducservice-> " + id);
+    print(companyId);
 
     final Map<String, dynamic> authData = {
-      'id': 1,
+      'id': companyId,
     };
 
     isLoading = true;
@@ -51,7 +53,7 @@ class ProductService extends ChangeNotifier {
       String articleId, String price, String familyId) async {
     String? token = await storage.read(key: 'token') ?? '';
     String? companyId = await UserService().readCompany_id();
-    print(companyId);
+    print('companyId $companyId');
 
     final Map<String, dynamic> authData = {
       'article_id': articleId,
@@ -79,6 +81,7 @@ class ProductService extends ChangeNotifier {
 
   deleteProduct(String id) async {
     String? token = await storage.read(key: 'token') ?? '';
+    print(id);
 
     final url = Uri.http(_baseUrl, '/public/api/products/$id');
     isLoading = true;
@@ -93,5 +96,12 @@ class ProductService extends ChangeNotifier {
         "Authorization": "Bearer $token"
       },
     );
+
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    print(decodedResp['message'].toString());
+
+    isLoading = false;
+    notifyListeners();
+    return decodedResp['message'].toString();
   }
 }

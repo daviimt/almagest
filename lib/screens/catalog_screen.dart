@@ -94,11 +94,10 @@ class _CatalogScreenState extends State<CatalogScreen> {
                         onPressed: () async {
                           await CoolAlert.show(
                             context: context,
-                            type: CoolAlertType.warning,
+                            type: CoolAlertType.confirm,
                             title: 'Confirmar',
                             text:
                                 '¿Estás seguro de eliminar el producto seleccionado?',
-                            showCancelBtn: true,
                             confirmBtnColor: Colors.purple,
                             confirmBtnText: 'Eliminar',
                             onConfirmBtnTap: () {
@@ -108,7 +107,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
                                 productos.removeAt(index);
                               });
                             },
-                            cancelBtnText: 'Cancelar',
                           );
                         },
                         icon: const Icon(
