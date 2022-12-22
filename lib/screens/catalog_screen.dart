@@ -1,10 +1,9 @@
 import 'package:almagest/Models/models.dart';
 import 'package:almagest/services/product_service.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:counter_button/counter_button.dart';
 import 'package:flutter/material.dart';
 import 'package:almagest/services/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:provider/provider.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -16,18 +15,13 @@ class CatalogScreen extends StatefulWidget {
 
 class _CatalogScreenState extends State<CatalogScreen> {
   final productService = ProductService();
-  final userService = UserService();
-  final authService = AuthService();
-  final articleService = ArticleService();
 
   List<ProductData> productos = [];
-  List<ArticleData> articles = [];
 
   Future getProducts() async {
     await productService.getProducts();
     setState(() {
       productos = productService.products;
-      print(productos);
     });
   }
 
@@ -48,10 +42,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
       }
     }
 
-    for (int i = 0; i < productos.length; i++) {
-      print(productos[i]);
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Products'),
@@ -65,10 +55,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
         ),
       ),
       body: builListView(context, productos),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add_box_outlined),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
@@ -81,68 +67,59 @@ class _CatalogScreenState extends State<CatalogScreen> {
     );
   }
 
-  int _counterValue = 0;
   Widget builListView(BuildContext context, List articles) {
     return ListView.separated(
       padding: const EdgeInsets.all(30),
       itemCount: articles.length,
       itemBuilder: (BuildContext context, index) {
-        return Slidable(
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (BuildContext _) async {
-                  await CoolAlert.show(
-                    context: context,
-                    type: CoolAlertType.warning,
-                    title: 'Confirmar',
-                    text: '¿Estás seguro de eliminar el producto seleccionado?',
-                    showCancelBtn: true,
-                    confirmBtnColor: Colors.purple,
-                    confirmBtnText: 'Eliminar',
-                    onConfirmBtnTap: () {
-                      setState(() {
-                        productService.deleteProduct(
-                            productos[index].articleId.toString());
-                        productos.removeAt(index);
-                      });
-                    },
-                    onCancelBtnTap: () => Navigator.pop(context),
-                    cancelBtnText: 'Cancelar',
-                  );
-                },
-                backgroundColor: const Color(0xFFFE4A49),
-                foregroundColor: Colors.white,
-                icon: Icons.delete,
-                label: 'Eliminar',
-              ),
-            ],
-          ),
-          child: SizedBox(
-            height: 250,
-            child: Card(
-              elevation: 20,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('${productos[index].compamyDescription}',
-                        style: const TextStyle(fontSize: 20)),
-                    const Divider(color: Colors.black),
-                    CounterButton(
-                      loading: false,
-                      onChange: (min) {
-                        setState(() {
-                          _counterValue = min;
-                        });
-                      },
-                      count: _counterValue,
-                      countColor: Colors.purple,
-                      buttonColor: Colors.purpleAccent,
-                      progressColor: Colors.purpleAccent,
-                    ),
-                  ]),
-            ),
+        return SizedBox(
+          height: 250,
+          child: Card(
+            elevation: 20,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('${productos[index].compamyDescription}',
+                      style: const TextStyle(fontSize: 20)),
+                  const Divider(color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Price : ${productos[index].price}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      const Divider(color: Colors.black),
+                      GFIconButton(
+                        onPressed: () async {
+                          await CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.warning,
+                            title: 'Confirmar',
+                            text:
+                                '¿Estás seguro de eliminar el producto seleccionado?',
+                            showCancelBtn: true,
+                            confirmBtnColor: Colors.purple,
+                            confirmBtnText: 'Eliminar',
+                            onConfirmBtnTap: () {
+                              productService.deleteProduct(
+                                  productos[index].articleId.toString());
+                              setState(() {
+                                productos.removeAt(index);
+                              });
+                            },
+                            cancelBtnText: 'Cancelar',
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.delete_outlined,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
           ),
         );
       },

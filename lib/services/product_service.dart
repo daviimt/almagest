@@ -51,6 +51,7 @@ class ProductService extends ChangeNotifier {
       String articleId, String price, String familyId) async {
     String? token = await storage.read(key: 'token') ?? '';
     String? companyId = await UserService().readCompany_id();
+    print(companyId);
 
     final Map<String, dynamic> authData = {
       'article_id': articleId,

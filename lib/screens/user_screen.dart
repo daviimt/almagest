@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:almagest/Models/models.dart';
-import 'package:almagest/Models/user_alone.dart';
 import 'package:almagest/services/product_service.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +30,9 @@ class _UserScreenState extends State<UserScreen> {
 
   Future getUser(String id) async {
     await userService.getUser();
-    String companite = await userService.getUser() as String;
+    String companie = await userService.getUser() as String;
     setState(() {
-      user = companite;
+      user = companie;
     });
   }
 
