@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:almagest/Models/user_alone.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,7 +57,6 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    var usuario = UserAlone.fromJson(decodedResp);
     await storage.write(
         key: 'company_id', value: decodedResp['data']['company_id'].toString());
     isLoading = false;
@@ -66,6 +64,7 @@ class UserService extends ChangeNotifier {
     return decodedResp['data']['company_id'].toString();
   }
 
+  // ignore: non_constant_identifier_names
   readCompany_id() async {
     return await storage.read(key: 'company_id') ?? '';
   }

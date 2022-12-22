@@ -18,10 +18,7 @@ class ProductService extends ChangeNotifier {
   getProducts() async {
     // String? token = await storage.read(key: 'token') ?? '';
     String? token = await AuthService().readToken();
-    String? id = await storage.read(key: 'id') ?? '';
     String? companyId = await UserService().readCompany_id();
-    print("inproducservice-> " + id);
-    print(companyId);
 
     final Map<String, dynamic> authData = {
       'id': companyId,
@@ -41,7 +38,6 @@ class ProductService extends ChangeNotifier {
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
     var p = Products.fromJson(decodedResp);
     for (var i in p.data!) {
-      print(i);
       products.add(i);
     }
     isLoading = false;
@@ -53,7 +49,6 @@ class ProductService extends ChangeNotifier {
       String articleId, String price, String familyId) async {
     String? token = await storage.read(key: 'token') ?? '';
     String? companyId = await UserService().readCompany_id();
-    print('companyId $companyId');
 
     final Map<String, dynamic> authData = {
       'article_id': articleId,
@@ -81,7 +76,6 @@ class ProductService extends ChangeNotifier {
 
   deleteProduct(String id) async {
     String? token = await storage.read(key: 'token') ?? '';
-    print(id);
 
     final url = Uri.http(_baseUrl, '/public/api/products/$id');
     isLoading = true;
@@ -98,7 +92,6 @@ class ProductService extends ChangeNotifier {
     );
 
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp['message'].toString());
 
     isLoading = false;
     notifyListeners();

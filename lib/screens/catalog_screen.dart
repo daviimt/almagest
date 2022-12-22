@@ -97,12 +97,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             type: CoolAlertType.confirm,
                             title: 'Confirmar',
                             text:
-                                '¿Estás seguro de eliminar el producto seleccionado?',
+                                '¿Estás seguro de eliminar el producto seleccionado? Tras eliminar el seleccionado pulsar fuera de la alerta.',
                             confirmBtnColor: Colors.purple,
                             confirmBtnText: 'Eliminar',
                             onConfirmBtnTap: () {
                               productService.deleteProduct(
-                                  productos[index].articleId.toString());
+                                  productos[index].id.toString());
                               setState(() {
                                 productos.removeAt(index);
                               });

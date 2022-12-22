@@ -45,20 +45,20 @@ class UserAlone {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstname'] = this.firstname;
-    data['secondname'] = this.secondname;
-    data['email'] = this.email;
-    data['company_id'] = this.companyId;
-    data['type'] = this.type;
-    data['email_confirmed'] = this.emailConfirmed;
-    data['actived'] = this.actived;
-    data['code'] = this.code;
-    data['iscontact'] = this.iscontact;
-    data['deleted'] = this.deleted;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstname'] = firstname;
+    data['secondname'] = secondname;
+    data['email'] = email;
+    data['company_id'] = companyId;
+    data['type'] = type;
+    data['email_confirmed'] = emailConfirmed;
+    data['actived'] = actived;
+    data['code'] = code;
+    data['iscontact'] = iscontact;
+    data['deleted'] = deleted;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

@@ -47,6 +47,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
+    // ignore: avoid_print
     print('iniciando');
     getArticles();
     getUser(517.toString());
@@ -158,7 +159,6 @@ class _UserScreenState extends State<UserScreen> {
         double min = double.parse('${articlesBuscar[index].priceMin}');
         double max = double.parse('${articlesBuscar[index].priceMax}');
         double mid = ((min + max) / 2);
-        double _counter;
         return SizedBox(
           height: 250,
           child: Card(
@@ -183,7 +183,6 @@ class _UserScreenState extends State<UserScreen> {
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
-                          print(user);
                           productService.addProduct(
                             articlesBuscar[index].id.toString(),
                             mid.toString(),
