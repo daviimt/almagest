@@ -91,22 +91,33 @@ class _CatalogScreenState extends State<CatalogScreen> {
                       ),
                       const Divider(color: Colors.black),
                       GFIconButton(
-                        onPressed: () async {
-                          await CoolAlert.show(
+                        onPressed: () {
+                          showDialog<String>(
                             context: context,
-                            type: CoolAlertType.confirm,
-                            title: 'Confirmar',
-                            text:
-                                '¿Estás seguro de eliminar el producto seleccionado? Tras eliminar el seleccionado pulsar fuera de la alerta.',
-                            confirmBtnColor: Colors.purple,
-                            confirmBtnText: 'Eliminar',
-                            onConfirmBtnTap: () {
-                              productService.deleteProduct(
-                                  productos[index].id.toString());
-                              setState(() {
-                                productos.removeAt(index);
-                              });
-                            },
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Delete Product'),
+                              content: const Text('Are you sure?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    productService.deleteProduct(
+                                        productos[index].id.toString());
+                                    setState(() {
+                                      productos.removeWhere((element) =>
+                                          (element == productos[index]));
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                              ],
+                            ),
                           );
                         },
                         icon: const Icon(
