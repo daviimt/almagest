@@ -99,6 +99,7 @@ class _UserScreenState extends State<UserScreen> {
       appBar: AppBar(
         title: const Text('Articles'),
         centerTitle: true,
+        actions: [Text('$cont/5')],
         leading: IconButton(
           icon: const Icon(Icons.login_outlined),
           onPressed: () {
