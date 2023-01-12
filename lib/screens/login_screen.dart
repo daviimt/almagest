@@ -15,37 +15,38 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: AuthBackground(
             child: SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 250),
-          CardContainer(
-              child: Column(
+          child: Column(
             children: [
-              const SizedBox(height: 10),
-              Text('Login', style: Theme.of(context).textTheme.headline4),
-              const SizedBox(height: 30),
-              ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(), child: _LoginForm())
-            ],
-          )),
-          const SizedBox(height: 50),
-          TextButton(
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, 'register'),
-              style: ButtonStyle(
-                  overlayColor:
-                      MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all(const StadiumBorder())),
-              child: const Text(
-                'Crear una nueva cuenta',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+              const SizedBox(height: 250),
+              CardContainer(
+                  child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Text('Login', style: Theme.of(context).textTheme.headline4),
+                  const SizedBox(height: 30),
+                  ChangeNotifierProvider(
+                      create: (_) => LoginFormProvider(), child: _LoginForm())
+                ],
               )),
-          const SizedBox(height: 50),
-        ],
-      ),
-    )));
+              const SizedBox(height: 50),
+              TextButton(
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, 'register'),
+                  style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.indigo.withOpacity(0.1)),
+                      shape: MaterialStateProperty.all(const StadiumBorder())),
+                  child: const Text(
+                    'Crear una nueva cuenta',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  )),
+              const SizedBox(height: 50),
+            ],
+          ),
+        )));
   }
 }
 

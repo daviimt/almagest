@@ -36,7 +36,7 @@ class AppState extends StatelessWidget {
         ),
         // ChangeNotifierProvider(create: (_) => AuthService()),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     );
   }
 }
@@ -48,12 +48,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InternetWidget(
-      offline: const LoadingScreen(),
+      offline: LoadingScreen(),
       // ignore: avoid_print
       whenOffline: () => LoadingScreen,
       // ignore: avoid_print
       whenOnline: () => print('Connected to internet'),
-      loadingWidget: const Center(child: Text('Loading')),
+      loadingWidget: Center(child: Text('Loading')),
       online: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Almagest',

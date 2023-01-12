@@ -96,6 +96,7 @@ class _UserScreenState extends State<UserScreen> {
     //   }
     // }
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Row(children: [
           IconButton(
