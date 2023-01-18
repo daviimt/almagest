@@ -34,6 +34,10 @@ class AppState extends StatelessWidget {
           create: (_) => ArticleService(),
           lazy: false,
         ),
+        ChangeNotifierProvider(
+          create: (_) => OrdersService(),
+          lazy: false,
+        ),
         // ChangeNotifierProvider(create: (_) => AuthService()),
       ],
       child: MyApp(),

@@ -1,3 +1,4 @@
+export 'package:almagest/Models/orders.dart';
 export 'package:almagest/Models/user.dart';
 export 'package:almagest/Models/companies.dart';
 export 'package:almagest/Models/articles.dart';
