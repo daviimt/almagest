@@ -1,3 +1,4 @@
+export 'package:almagest/screens/order_screen.dart';
 export 'package:almagest/screens/admin_screen.dart';
 export 'package:almagest/screens/check_auth_screen.dart';
 export 'package:almagest/screens/home_screen.dart';

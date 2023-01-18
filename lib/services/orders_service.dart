@@ -16,6 +16,9 @@ class OrdersService extends ChangeNotifier {
   final List<OrdersData> orders = [];
   bool isLoading = true;
 
+  OrdersService() {
+    getOrders();
+  }
   getOrders() async {
     // String? token = await storage.read(key: 'token') ?? '';
     String? token = await AuthService().readToken();
@@ -23,7 +26,7 @@ class OrdersService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.http(_baseUrl, '/public/api/orders', {});
-    final resp = await http.post(
+    final resp = await http.get(
       url,
       headers: {
         'Content-type': 'application/json',
@@ -39,6 +42,7 @@ class OrdersService extends ChangeNotifier {
     }
     isLoading = false;
     notifyListeners();
+    print(orders);
     return orders;
   }
 }

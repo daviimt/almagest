@@ -53,6 +53,14 @@ class _CatalogScreenState extends State<CatalogScreen> {
             Navigator.pushReplacementNamed(context, 'login');
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.markunread_mailbox_outlined),
+            onPressed: () {
+              Navigator.of(context).pushNamed('orders');
+            },
+          )
+        ],
       ),
       body: builListView(context, productos),
       bottomNavigationBar: BottomNavigationBar(
