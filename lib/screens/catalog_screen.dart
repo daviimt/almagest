@@ -1,3 +1,4 @@
+import 'package:almagest/Models/family.dart';
 import 'package:almagest/Models/models.dart';
 import 'package:almagest/services/product_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -17,6 +18,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   final productService = ProductService();
 
   List<ProductData> productos = [];
+  List<FamilyData> families = [];
 
   Future getProducts() async {
     await productService.getProducts();

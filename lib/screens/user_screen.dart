@@ -7,6 +7,9 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/family.dart';
+import '../services/family_service.dart';
+
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
 
@@ -18,9 +21,12 @@ class _UserScreenState extends State<UserScreen> {
   final articleService = ArticleService();
   final productService = ProductService();
   final userService = UserService();
+  final familyService = FamilyService();
+
   List<ProductData> products = [];
   List<ArticleData> articles = [];
   List<ArticleData> articlesBuscar = [];
+  List<FamilyData> families = [];
   String user = "";
   int cont = 0;
   bool desactivate = true;
@@ -52,6 +58,14 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
+  Future getFamilies() async {
+    setState(() => families.clear());
+    await familyService.getFamilies();
+    setState(() {
+      families = familyService.family;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +73,7 @@ class _UserScreenState extends State<UserScreen> {
     print('iniciando');
     getArticles();
     getUser();
+    getFamilies();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -177,6 +192,7 @@ class _UserScreenState extends State<UserScreen> {
         double max = double.parse('${articlesBuscar[index].priceMax}');
         double mid = ((min + max) / 2);
         double wt = double.parse('${articlesBuscar[index].weight}');
+
         print(articlesBuscar[index].weight);
         return SizedBox(
           height: 250,
@@ -219,21 +235,37 @@ class _UserScreenState extends State<UserScreen> {
                       const Divider(color: Colors.black),
                       GFIconButton(
                         onPressed: () {
-                          if (cont < 5) {
-                            productService.addProduct(
-                              articlesBuscar[index].id.toString(),
-                              mid.toString(),
-                              articlesBuscar[index].familyId.toString(),
-                            );
-                            cont++;
-                            setState(() {
-                              // articles.removeWhere((element) =>
-                              //     (element == articlesBuscar[index]));
-                              articlesBuscar.removeWhere((element) =>
-                                  (element == articlesBuscar[index]));
-                            });
+                          double margenBeneficio = 0;
+                          for (int x = 0; x < families.length; x++) {
+                            if (articlesBuscar[index].familyId ==
+                                families[x].id) {
+                              print(families[x].id);
+                              margenBeneficio =
+                                  double.parse(families[x].profitMargin!);
+                            }
+                            print('JAVI EL POWERLIFT');
+                          }
+                          print('NACHO FRANCES');
+
+                          print(((mid * margenBeneficio) / 100) + mid);
+
+                          if (((mid * margenBeneficio) / 100) + mid > max) {
+                            customToast('Profit margin superado', context);
                           } else {
-                            customToast('Elements limit reached', context);
+                            if (cont < 5) {
+                              productService.addProduct(
+                                articlesBuscar[index].id.toString(),
+                                mid.toString(),
+                                articlesBuscar[index].familyId.toString(),
+                              );
+                              cont++;
+                              setState(() {
+                                articlesBuscar.removeWhere((element) =>
+                                    (element == articlesBuscar[index]));
+                              });
+                            } else {
+                              customToast('Elements limit reached', context);
+                            }
                           }
                         },
                         icon: const Icon(
