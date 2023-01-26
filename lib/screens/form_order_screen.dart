@@ -1,6 +1,5 @@
 import 'package:almagest/Models/models.dart';
-import 'package:almagest/screens/form_order_screen.dart';
-import 'package:almagest/screens/user_screen.dart';
+import 'package:almagest/screens/screens.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -8,8 +7,8 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 
-class OrdersScreen extends StatelessWidget {
-  const OrdersScreen({Key? key}) : super(key: key);
+class FormOrderScreen extends StatelessWidget {
+  const FormOrderScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(children: [
           Text(
-            'Orders',
+            'Form Order',
           ),
         ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
         centerTitle: true,
@@ -114,13 +113,6 @@ class OrdersScreen extends StatelessWidget {
                 ),
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => FormOrderScreen()));
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
