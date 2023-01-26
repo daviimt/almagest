@@ -1,4 +1,5 @@
 import 'package:almagest/Models/models.dart';
+import 'package:almagest/screens/user_screen.dart';
 import 'package:almagest/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -112,6 +113,13 @@ class OrdersScreen extends StatelessWidget {
                 ),
               ),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => UserScreen()));
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
