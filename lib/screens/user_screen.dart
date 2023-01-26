@@ -171,11 +171,11 @@ class _UserScreenState extends State<UserScreen> {
             ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
         ],
-        currentIndex: 0, //New
+        currentIndex: 1, //New
         onTap: _onItemTapped,
       ),
     );

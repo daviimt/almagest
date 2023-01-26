@@ -67,11 +67,11 @@ class _CatalogScreenState extends State<CatalogScreen> {
       body: builListView(context, productos),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
         ],
-        currentIndex: 1, //New
+        currentIndex: 0, //New
         onTap: _onItemTapped,
       ),
     );
