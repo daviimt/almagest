@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:almagest/Models/catalog.dart';
+import 'package:almagest/services/catalog_service.dart';
 import 'package:almagest/services/catalog_service2.dart';
 import 'package:almagest/services/cicle_service.dart';
 import 'package:almagest/services/new_order_service.dart';
@@ -174,7 +175,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           height: 10,
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * (products.length / 10),
+          height: MediaQuery.of(context).size.height * (products.length / 11.5),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: products.length,
@@ -202,29 +203,33 @@ class _RegisterFormState extends State<_RegisterForm> {
                         },
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         child: Text(
                           products[index].compamyDescription.toString(),
                           style: const TextStyle(color: Colors.black),
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        child: Visibility(
-                          visible: isChecked[index],
-                          child: SpinBox(
-                              min: 1,
-                              max: 40,
-                              step: 1,
-                              readOnly: true,
-                              decimals: 0,
-                              value: valorPrueba,
-                              onChanged: (value) {
-                                valorPrueba = value;
-                                print(pedido);
-                                pedido[products[index].articleId.toString()] =
-                                    value.toInt().toString();
-                              }),
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 10),
+                          child: Visibility(
+                            visible: isChecked[index],
+                            child: SpinBox(
+                                min: 1,
+                                max: 40,
+                                step: 1,
+                                readOnly: true,
+                                decimals: 0,
+                                value: valorPrueba,
+                                onChanged: (value) {
+                                  valorPrueba = value;
+                                  print(pedido);
+                                  pedido[products[index].articleId.toString()] =
+                                      value.toInt().toString();
+                                }),
+                          ),
                         ),
                       ),
                     ],
@@ -232,13 +237,12 @@ class _RegisterFormState extends State<_RegisterForm> {
             },
           ),
         ),
-        if (buttonState == true)
+        if (buttonState == true && ciclesService.isLoading == false)
           Container(
             child: MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               disabledColor: Colors.white,
-              elevation: 0,
               color: Colors.blue[900],
               onPressed: () async {
                 if (pedido.isEmpty) {
