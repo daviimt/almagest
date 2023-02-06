@@ -125,20 +125,28 @@ class _RegisterFormState extends State<_RegisterForm> {
 
     return Column(
       children: [
-        DropdownButtonFormField(
-          hint: const Text('Select a company'),
-          items: aux.map((e) {
-            return DropdownMenuItem(
-              value: e.id,
-              child: Text(e.name.toString()),
-            );
-          }).toList(),
-          onChanged: (value) {
-            registerForm.cicleid = value! as int;
-          },
-          validator: (value) {
-            return (value != null && value != 0) ? null : 'select a Company';
-          },
+        const SizedBox(
+          height: 20,
+        ),
+        Container(
+          width: 300.0,
+          child: DropdownButtonFormField(
+            icon: Icon(Icons.keyboard_double_arrow_down_rounded),
+            hint: const Text('Select a company'),
+            iconSize: 40,
+            items: aux.map((e) {
+              return DropdownMenuItem(
+                value: e.id,
+                child: Text(e.name.toString()),
+              );
+            }).toList(),
+            onChanged: (value) {
+              registerForm.cicleid = value! as int;
+            },
+            validator: (value) {
+              return (value != null && value != 0) ? null : 'Select a Company';
+            },
+          ),
         ),
         const SizedBox(
           height: 20,
@@ -146,9 +154,9 @@ class _RegisterFormState extends State<_RegisterForm> {
         MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          disabledColor: Colors.grey,
+          disabledColor: Colors.black,
           elevation: 0,
-          color: Colors.blueGrey[600],
+          color: Colors.blue[900],
           onPressed: () {
             getList();
           },
@@ -173,15 +181,13 @@ class _RegisterFormState extends State<_RegisterForm> {
               return Container(
                   height: 70,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white),
-                    color: Colors.blueGrey[500],
+                    border: Border.all(color: Colors.black),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Checkbox(
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.resolveWith(getColor),
+                        checkColor: Colors.black,
                         value: isChecked[index],
                         onChanged: (bool? value) {
                           setState(() {
@@ -194,10 +200,10 @@ class _RegisterFormState extends State<_RegisterForm> {
                         },
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
                           products[index].compamyDescription.toString(),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       ),
                       SizedBox(
@@ -227,47 +233,42 @@ class _RegisterFormState extends State<_RegisterForm> {
         MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          disabledColor: Colors.grey,
+          disabledColor: Colors.white,
           elevation: 0,
-          color: Colors.blueGrey[600],
+          color: Colors.blue[900],
           onPressed: () async {
             if (pedido.isEmpty) {
-              customToast('No se ha seleccionado ningun producto', context);
+              customToast('Debes seleccionar un producto', context);
             } else {
               final newOrderService =
                   Provider.of<NewOrderService>(context, listen: false);
               int num = 1 + Random().nextInt((99999 + 1) - 1);
               newOrderService.getNewOrder(num.toString(), pedido, date,
                   company_id!, registerForm.cicleid.toString());
-              final pdf = pw.Document();
               Data targetCompany = Data();
               for (var i in ciclos) {
                 if (i.id.toString() == registerForm.cicleid.toString()) {
                   targetCompany = i;
                 }
               }
-              final file = File(
-                  "${"/storage/emulated/0/Download/" + "pedido" + num.toString()}.pdf");
-              await file.writeAsBytes(await pdf.save());
               final Email email = Email(
                 body: 'Resguardo Pedido',
                 subject: 'Pedido',
                 recipients: ['naframu00@gmail.com'],
-                attachmentPaths: [file.path],
                 isHTML: false,
               );
-              String platformResponse;
+              String emailResponse;
 
               try {
                 print('trying');
                 await FlutterEmailSender.send(email);
-                platformResponse = 'success';
+                emailResponse = 'success';
               } catch (error) {
                 print('error');
-                platformResponse = error.toString();
+                emailResponse = error.toString();
               }
 
-              print('aaaaa' + platformResponse);
+              print('aaaaa' + emailResponse);
               customToast('Pedido realizado', context);
             }
           },
