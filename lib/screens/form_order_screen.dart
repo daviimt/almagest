@@ -6,6 +6,7 @@ import 'package:almagest/services/catalog_service.dart';
 import 'package:almagest/services/catalog_service2.dart';
 import 'package:almagest/services/cicle_service.dart';
 import 'package:almagest/services/new_order_service.dart';
+import 'package:almagest/services/product_service.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:intl/intl.dart';
 import '../models/cicles.dart';
@@ -57,9 +58,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   List<bool> isChecked = [];
   Map<String, String> pedido = {};
   String? company_id = "";
-  getCompanyId() async {
-    company_id = await UserService().readCompany_id();
-  }
+  final userservice = UserService();
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -73,8 +72,16 @@ class _RegisterFormState extends State<_RegisterForm> {
     return Colors.red;
   }
 
+  Future getCompanyId() async {
+    String compania = await userservice.readCompany_id();
+    setState(() {
+      company_id = compania;
+    });
+  }
+
   @override
   void initState() {
+    print('INICIO DE INIT');
     super.initState();
     getCompanyId();
   }
@@ -99,6 +106,7 @@ class _RegisterFormState extends State<_RegisterForm> {
       if (i.id.toString() != company_id) {
         aux.add(i);
       }
+      print(i.id.toString() + ' ' + company_id.toString());
     }
     for (var i in ciclos) {
       if (i.id.toString() == company_id) {
