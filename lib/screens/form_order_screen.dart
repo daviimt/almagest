@@ -250,21 +250,25 @@ class _RegisterFormState extends State<_RegisterForm> {
                   "${"/storage/emulated/0/Download/" + "pedido" + num.toString()}.pdf");
               await file.writeAsBytes(await pdf.save());
               final Email email = Email(
-                body: 'Se adjunta una copia de su pedido realizado',
-                subject: 'Pedido realizado',
-                recipients: ['alex.junquera96@gmail.com'],
+                body: 'Resguardo Pedido',
+                subject: 'Pedido',
+                recipients: ['naframu00@gmail.com'],
                 attachmentPaths: [file.path],
                 isHTML: false,
               );
               String platformResponse;
 
               try {
+                print('trying');
                 await FlutterEmailSender.send(email);
                 platformResponse = 'success';
               } catch (error) {
+                print('error');
                 platformResponse = error.toString();
               }
-              customToast('Pedido realizado correctamente', context);
+
+              print('aaaaa' + platformResponse);
+              customToast('Pedido realizado', context);
             }
           },
           child: Container(
@@ -279,25 +283,17 @@ class _RegisterFormState extends State<_RegisterForm> {
     );
   }
 
-  void customToast(String message, BuildContext context) {
+  void customToast(String s, BuildContext context) {
     showToast(
-      message,
-      textStyle: const TextStyle(
-        fontSize: 14,
-        wordSpacing: 0.1,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-      textPadding: const EdgeInsets.all(23),
-      fullWidth: true,
-      toastHorizontalMargin: 25,
-      borderRadius: BorderRadius.circular(15),
-      backgroundColor: Colors.blueGrey[500],
-      alignment: Alignment.bottomCenter,
-      position: StyledToastPosition.top,
-      duration: const Duration(seconds: 3),
-      animation: StyledToastAnimation.slideFromTop,
+      s,
       context: context,
+      animation: StyledToastAnimation.scale,
+      reverseAnimation: StyledToastAnimation.fade,
+      position: StyledToastPosition.top,
+      animDuration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 4),
+      curve: Curves.elasticOut,
+      reverseCurve: Curves.linear,
     );
   }
 }

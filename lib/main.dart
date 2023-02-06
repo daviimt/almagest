@@ -1,6 +1,7 @@
 import 'package:almagest/services/catalog_service.dart';
 import 'package:almagest/services/catalog_service2.dart';
 import 'package:almagest/services/cicle_service.dart';
+import 'package:almagest/services/new_order_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,6 +52,10 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CatalogService2(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NewOrderService(),
           lazy: false,
         ),
 
