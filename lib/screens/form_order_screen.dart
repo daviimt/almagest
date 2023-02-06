@@ -51,6 +51,7 @@ class _RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<_RegisterForm> {
+  bool buttonState = false;
   List<CatalogData> products = [];
   List<bool> isChecked = [];
   Map<String, String> pedido = {};
@@ -163,7 +164,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
             child: const Text(
-              'Submit',
+              'List Products',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -172,7 +173,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           height: 10,
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.65,
+          height: MediaQuery.of(context).size.height * (products.length / 10),
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: products.length,
@@ -230,53 +231,55 @@ class _RegisterFormState extends State<_RegisterForm> {
             },
           ),
         ),
-        MaterialButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          disabledColor: Colors.white,
-          elevation: 0,
-          color: Colors.blue[900],
-          onPressed: () async {
-            if (pedido.isEmpty) {
-              customToast('Debes seleccionar un producto', context);
-            } else {
-              final newOrderService =
-                  Provider.of<NewOrderService>(context, listen: false);
-              int num = 1 + Random().nextInt((99999 + 1) - 1);
-              newOrderService.getNewOrder(num.toString(), pedido, date,
-                  company_id!, registerForm.cicleid.toString());
-              Data targetCompany = Data();
-              for (var i in ciclos) {
-                if (i.id.toString() == registerForm.cicleid.toString()) {
-                  targetCompany = i;
+        Container(
+          child: MaterialButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            disabledColor: Colors.white,
+            elevation: 0,
+            color: Colors.blue[900],
+            onPressed: () async {
+              if (pedido.isEmpty) {
+                customToast('Debes seleccionar un producto', context);
+              } else {
+                final newOrderService =
+                    Provider.of<NewOrderService>(context, listen: false);
+                int num = 1 + Random().nextInt((99999 + 1) - 1);
+                newOrderService.getNewOrder(num.toString(), pedido, date,
+                    company_id!, registerForm.cicleid.toString());
+                Data targetCompany = Data();
+                for (var i in ciclos) {
+                  if (i.id.toString() == registerForm.cicleid.toString()) {
+                    targetCompany = i;
+                  }
                 }
-              }
-              final Email email = Email(
-                body: 'Resguardo Pedido',
-                subject: 'Pedido',
-                recipients: ['naframu00@gmail.com'],
-                isHTML: false,
-              );
-              String emailResponse;
+                final Email email = Email(
+                  body: 'Resguardo Pedido',
+                  subject: 'Pedido',
+                  recipients: ['naframu00@gmail.com'],
+                  isHTML: false,
+                );
+                String emailResponse;
 
-              try {
-                print('trying');
-                await FlutterEmailSender.send(email);
-                emailResponse = 'success';
-              } catch (error) {
-                print('error');
-                emailResponse = error.toString();
-              }
+                try {
+                  print('trying');
+                  await FlutterEmailSender.send(email);
+                  emailResponse = 'success';
+                } catch (error) {
+                  print('error');
+                  emailResponse = error.toString();
+                }
 
-              print('aaaaa' + emailResponse);
-              customToast('Pedido realizado', context);
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-            child: const Text(
-              'Realizar pedido',
-              style: TextStyle(color: Colors.white),
+                print('aaaaa' + emailResponse);
+                customToast('Pedido realizado', context);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+              child: const Text(
+                'Realizar pedido',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ),
