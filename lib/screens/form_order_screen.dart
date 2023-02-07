@@ -498,9 +498,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                           ])
                         ]);
                       }));
-                  final output = await getApplicationDocumentsDirectory();
-                  final file =
-                      File("${output.path + "pedido" + num.toString()}.pdf");
+                  final file = File(
+                      "${"/storage/emulated/0/Download/" + "pedido" + num.toString()}.pdf");
                   await file.writeAsBytes(await pdf.save());
 
                   final Email email = Email(
