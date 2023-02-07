@@ -498,15 +498,16 @@ class _RegisterFormState extends State<_RegisterForm> {
                           ])
                         ]);
                       }));
-
-                  final file = File(
-                      "${"/storage/emulated/0/Download/" + "pedido" + num.toString()}.pdf");
+                  final output = await getApplicationDocumentsDirectory();
+                  final file =
+                      File("${output.path + "pedido" + num.toString()}.pdf");
                   await file.writeAsBytes(await pdf.save());
 
                   final Email email = Email(
                     body: 'Resguardo Pedido',
                     subject: 'Pedido',
                     recipients: ['naframu00@gmail.com'],
+                    attachmentPaths: [file.path],
                     isHTML: false,
                   );
                   String emailResponse;
