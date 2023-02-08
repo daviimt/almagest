@@ -61,18 +61,6 @@ class _RegisterFormState extends State<_RegisterForm> {
   String? company_id = "";
   final userservice = UserService();
 
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.blue;
-    }
-    return Colors.red;
-  }
-
   Future getCompanyId() async {
     String compania = await userservice.readCompany_id();
     setState(() {
@@ -255,7 +243,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               color: Colors.blue[900],
               onPressed: () async {
                 if (pedido.isEmpty) {
-                  customToast('Debes seleccionar un producto', context);
+                  customToast('You must select one product', context);
                 } else {
                   final newOrderService =
                       Provider.of<NewOrderService>(context, listen: false);
