@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
+import 'package:intl/intl.dart';
 
 import 'package:almagest/Models/catalog.dart';
 import 'package:almagest/services/catalog_service.dart';
@@ -8,6 +9,7 @@ import 'package:almagest/services/catalog_service2.dart';
 import 'package:almagest/services/cicle_service.dart';
 import 'package:almagest/services/new_order_service.dart';
 import 'package:almagest/services/product_service.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:intl/intl.dart';
 import '../models/cicles.dart';
@@ -151,8 +153,6 @@ class _RegisterFormState extends State<_RegisterForm> {
           height: 20,
         ),
         MaterialButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           disabledColor: Colors.black,
           elevation: 0,
           color: Colors.blue[900],
@@ -161,7 +161,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             getList();
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             child: const Text(
               'List Products',
               style: TextStyle(color: Colors.white),
@@ -172,73 +172,76 @@ class _RegisterFormState extends State<_RegisterForm> {
           height: 10,
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * (products.length / 11.5),
+          height: MediaQuery.of(context).size.height * 0.60,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: products.length,
             itemBuilder: (BuildContext ctxt, int index) {
               double valorPrueba = 0;
-              return Container(
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Checkbox(
-                        checkColor: Colors.black,
-                        value: isChecked[index],
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isChecked[index] = value!;
-                            if (!isChecked[index]) {
-                              pedido
-                                  .remove(products[index].articleId.toString());
-                            }
-                          });
-                        },
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(9, 10, 9, 10),
+                  child: Container(
+                      height: 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: Text(
-                          products[index].compamyDescription.toString(),
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 10),
-                          child: Visibility(
-                            visible: isChecked[index],
-                            child: SpinBox(
-                                min: 1,
-                                max: 40,
-                                step: 1,
-                                readOnly: true,
-                                decimals: 0,
-                                value: valorPrueba,
-                                onChanged: (value) {
-                                  valorPrueba = value;
-                                  print(pedido);
-                                  pedido[products[index].articleId.toString()] =
-                                      value.toInt().toString();
-                                }),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Checkbox(
+                            checkColor: Colors.black,
+                            value: isChecked[index],
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked[index] = value!;
+                                if (!isChecked[index]) {
+                                  pedido.remove(
+                                      products[index].articleId.toString());
+                                }
+                              });
+                            },
                           ),
-                        ),
-                      ),
-                    ],
-                  ));
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: Text(
+                              products[index].compamyDescription.toString(),
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 10),
+                              child: Visibility(
+                                visible: isChecked[index],
+                                child: SpinBox(
+                                    min: 1,
+                                    max: 40,
+                                    step: 1,
+                                    readOnly: true,
+                                    decimals: 0,
+                                    value: valorPrueba,
+                                    onChanged: (value) {
+                                      valorPrueba = value;
+                                      print(pedido);
+                                      pedido[products[index]
+                                              .articleId
+                                              .toString()] =
+                                          value.toInt().toString();
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )));
             },
           ),
         ),
         if (buttonState == true && ciclesService.isLoading == false)
           Container(
             child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
               disabledColor: Colors.white,
               color: Colors.blue[900],
               onPressed: () async {
@@ -266,7 +269,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                   pw.MainAxisAlignment.spaceBetween,
                               children: [
                                 pw.Table(
-                                    border: pw.TableBorder.all(),
+                                    border: pw.TableBorder.symmetric(),
                                     children: [
                                       pw.TableRow(children: [
                                         pw.Column(
@@ -288,55 +291,43 @@ class _RegisterFormState extends State<_RegisterForm> {
                                             ]),
                                       ]),
                                     ]),
-                                pw.Table(
-                                    border: pw.TableBorder.all(),
-                                    children: [
-                                      pw.TableRow(children: [
-                                        pw.Column(
-                                            crossAxisAlignment:
-                                                pw.CrossAxisAlignment.start,
-                                            children: [
-                                              pw.SizedBox(height: 10),
-                                              pw.Row(children: [
-                                                pw.Text('PEDIDO Nº: ',
-                                                    style: pw.TextStyle(
-                                                        fontWeight: pw
-                                                            .FontWeight.bold)),
-                                                pw.Text(num.toString())
-                                              ]),
-                                              pw.SizedBox(height: 20),
-                                              pw.Row(children: [
-                                                pw.Text('FECHA: ',
-                                                    style: pw.TextStyle(
-                                                        fontWeight: pw
-                                                            .FontWeight.bold)),
-                                                pw.Text(fechaFormat)
-                                              ]),
-                                              pw.SizedBox(height: 10),
-                                            ]),
-                                      ]),
-                                    ]),
+                                pw.Table(children: [
+                                  pw.TableRow(children: [
+                                    pw.Column(
+                                        crossAxisAlignment:
+                                            pw.CrossAxisAlignment.start,
+                                        children: [
+                                          pw.SizedBox(height: 10),
+                                          pw.Row(children: [
+                                            pw.Text('Order Nº: ',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text(num.toString())
+                                          ]),
+                                          pw.SizedBox(height: 10),
+                                          pw.Row(children: [
+                                            pw.Text('DATE: ',
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text(fechaFormat)
+                                          ]),
+                                          pw.SizedBox(height: 10),
+                                          pw.Row(children: [
+                                            pw.Text("SHIPPING ADDRESS: ",
+                                                style: pw.TextStyle(
+                                                    fontWeight:
+                                                        pw.FontWeight.bold)),
+                                            pw.Text(
+                                                miEmpresa.address.toString())
+                                          ]),
+                                          pw.SizedBox(height: 10),
+                                        ]),
+                                  ]),
+                                ]),
                               ]),
                           pw.SizedBox(height: 25),
-                          pw.Row(children: [
-                            pw.Column(
-                                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.Row(children: [
-                                    pw.Text("DIRECCIÓN DE ENVÍO: ",
-                                        style: pw.TextStyle(
-                                            fontWeight: pw.FontWeight.bold)),
-                                    pw.Text(miEmpresa.address.toString())
-                                  ]),
-                                  pw.Row(children: [
-                                    pw.Text("TRANSPORTE: ",
-                                        style: pw.TextStyle(
-                                            fontWeight: pw.FontWeight.bold)),
-                                    pw.Text("A NUESTRO CARGO")
-                                  ]),
-                                ])
-                          ]),
-                          pw.SizedBox(height: 20),
                           pw.Table(border: pw.TableBorder.all(), children: [
                             pw.TableRow(children: [
                               pw.Column(
@@ -355,7 +346,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.center,
                                   children: [
-                                    pw.Text("DESCRIPCIÓN",
+                                    pw.Text("DESCRIPTION",
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold)),
                                   ]),
@@ -365,7 +356,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.center,
                                   children: [
-                                    pw.Text("CANTIDAD",
+                                    pw.Text("QUANTITY",
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold)),
                                   ]),
@@ -375,7 +366,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.center,
                                   children: [
-                                    pw.Text("PRECIO",
+                                    pw.Text("PRICE",
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold)),
                                   ]),
@@ -385,7 +376,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.center,
                                   children: [
-                                    pw.Text("IMPORTE",
+                                    pw.Text("TOTAL AMOUNT",
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold)),
                                   ]),
@@ -420,7 +411,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                                         children: [
                                           pw.Text(pedido[producto.articleId
                                                   .toString()] ??
-                                              'Google'),
+                                              '-'),
                                         ]),
                                     pw.Column(
                                         crossAxisAlignment:
@@ -445,55 +436,42 @@ class _RegisterFormState extends State<_RegisterForm> {
                                               .toStringAsFixed(2)),
                                         ]),
                                   ]),
-                            pw.TableRow(children: [
-                              pw.Column(
-                                  crossAxisAlignment:
-                                      pw.CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  children: [
-                                    pw.Text("TOTAL: ",
+                          ]),
+                          pw.SizedBox(height: 30),
+                          pw.Row(children: [
+                            pw.Column(
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Row(children: [
+                                    pw.Text(
+                                        "TOTAL: " +
+                                            precioTotal.toStringAsFixed(2),
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold)),
                                   ]),
-                              pw.Column(
-                                  crossAxisAlignment:
-                                      pw.CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  children: []),
-                              pw.Column(
-                                  crossAxisAlignment:
-                                      pw.CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  children: []),
-                              pw.Column(
-                                  crossAxisAlignment:
-                                      pw.CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  children: []),
-                              pw.Column(
-                                  crossAxisAlignment:
-                                      pw.CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  children: [
-                                    pw.Text(precioTotal.toStringAsFixed(2)),
-                                  ])
-                            ])
+                                ])
                           ])
                         ]);
                       }));
+
+                  String? path = await FilesystemPicker.open(
+                    title: 'Save to folder',
+                    context: context,
+                    rootDirectory: Directory("/storage/emulated/0/"),
+                    fsType: FilesystemType.folder,
+                    pickText: 'Save file to this folder',
+                  );
+                  DateTime dateToday = new DateTime.now();
+                  String dateT = dateToday.toString().substring(0, 10);
+
                   final file = File(
-                      "${"/storage/emulated/0/Download/" + "pedido" + num.toString()}.pdf");
+                      "${path.toString() + "/" + dateT + "-" + num.toString()}.pdf");
                   await file.writeAsBytes(await pdf.save());
 
                   final Email email = Email(
-                    body: 'Resguardo Pedido',
-                    subject: 'Pedido',
-                    recipients: ['naframu00@gmail.com'],
+                    body: 'Order Receipt',
+                    subject: 'Order',
+                    recipients: ['dmateomerino@gmail.com'],
                     attachmentPaths: [file.path],
                     isHTML: false,
                   );
@@ -508,15 +486,15 @@ class _RegisterFormState extends State<_RegisterForm> {
                     emailResponse = error.toString();
                   }
 
-                  print('aaaaa' + emailResponse);
-                  customToast('Pedido realizado', context);
+                  print('test ' + emailResponse);
+                  customToast('Order placed', context);
                 }
               },
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 child: const Text(
-                  'Realizar pedido',
+                  'Place Order',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
