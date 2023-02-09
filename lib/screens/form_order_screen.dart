@@ -143,6 +143,8 @@ class _RegisterFormState extends State<_RegisterForm> {
             }).toList(),
             onChanged: (value) {
               registerForm.cicleid = value! as int;
+              buttonState = true;
+              getList();
             },
             validator: (value) {
               return (value != null && value != 0) ? null : 'Select a Company';
@@ -151,22 +153,6 @@ class _RegisterFormState extends State<_RegisterForm> {
         ),
         const SizedBox(
           height: 20,
-        ),
-        MaterialButton(
-          disabledColor: Colors.black,
-          elevation: 0,
-          color: Colors.blue[900],
-          onPressed: () {
-            buttonState = true;
-            getList();
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            child: const Text(
-              'List Products',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
         ),
         const SizedBox(
           height: 10,
