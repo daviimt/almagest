@@ -456,7 +456,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   final Email email = Email(
                     body: 'Order Receipt',
                     subject: 'Order',
-                    recipients: ['dmateomerino@gmail.com'],
+                    recipients: ['raulreyes@cadiz.salesianos.edu'],
                     attachmentPaths: [file.path],
                     isHTML: false,
                   );
