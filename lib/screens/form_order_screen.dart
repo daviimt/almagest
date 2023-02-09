@@ -450,8 +450,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   DateTime dateToday = new DateTime.now();
                   String dateT = dateToday.toString().substring(0, 10);
 
-                  final file = File(
-                      "${path.toString() + dateT + "-" + num.toString()}.pdf");
+                  final file = File("${"$path/$dateT-$num"}.pdf");
                   await file.writeAsBytes(await pdf.save());
 
                   final Email email = Email(
