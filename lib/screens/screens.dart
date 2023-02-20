@@ -1,3 +1,5 @@
+export 'package:almagest/services/catalog_service2.dart';
+export 'package:almagest/screens/graphs_screen.dart';
 export 'package:almagest/screens/form_order_screen.dart';
 export 'package:almagest/screens/order_screen.dart';
 export 'package:almagest/screens/admin_screen.dart';

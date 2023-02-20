@@ -57,11 +57,17 @@ class _CatalogScreenState extends State<CatalogScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.markunread_mailbox_outlined),
+            icon: const Icon(Icons.markunread_mailbox_outlined),
             onPressed: () {
               Navigator.of(context).pushNamed('orders');
             },
-          )
+          ),
+          IconButton(
+            icon: const Icon(Icons.graphic_eq),
+            onPressed: () {
+              Navigator.of(context).pushNamed('graphs');
+            },
+          ),
         ],
       ),
       body: builListView(context, productos),

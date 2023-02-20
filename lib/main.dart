@@ -1,3 +1,4 @@
+import 'package:almagest/providers/providers.dart';
 import 'package:almagest/services/catalog_service.dart';
 import 'package:almagest/services/catalog_service2.dart';
 import 'package:almagest/services/cicle_service.dart';
@@ -58,6 +59,12 @@ class AppState extends StatelessWidget {
           create: (_) => NewOrderService(),
           lazy: false,
         ),
+        ChangeNotifierProvider(
+          create: (_) => ProductFormProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GraphService(),
+        ),
 
         // ChangeNotifierProvider(create: (_) => AuthService()),
       ],
@@ -92,6 +99,7 @@ class MyApp extends StatelessWidget {
           'admin': (_) => const AdminScreen(),
           'catalog': (_) => const UserScreen(),
           'orders': (_) => const OrdersScreen(),
+          'graphs': (_) => const GraphsScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(
