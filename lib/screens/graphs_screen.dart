@@ -129,6 +129,15 @@ class _GraphsScreenState extends State<GraphsScreen> {
                             : 'select a Product';
                       },
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Past 6 month orders",
+                      style: TextStyle(
+                        fontSize: 20, // Change this to adjust the font size
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -140,7 +149,6 @@ class _GraphsScreenState extends State<GraphsScreen> {
               SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
                   // Chart title
-                  title: ChartTitle(text: 'Past 6 month orders'),
                   // Enable legend
                   legend: Legend(isVisible: true),
                   // Enable tooltip
@@ -148,18 +156,9 @@ class _GraphsScreenState extends State<GraphsScreen> {
                   series: <ChartSeries<_SalesData, String>>[
                     LineSeries<_SalesData, String>(
                         dataSource: <_SalesData>[
-                          _SalesData(
-                              listaFechas[0].month, listaPedidos[0].toString()),
-                          _SalesData(
-                              listaFechas[1].month, listaPedidos[1].toString()),
-                          _SalesData(
-                              listaFechas[2].month, listaPedidos[2].toString()),
-                          _SalesData(
-                              listaFechas[3].month, listaPedidos[3].toString()),
-                          _SalesData(
-                              listaFechas[4].month, listaPedidos[4].toString()),
-                          _SalesData(
-                              listaFechas[5].month, listaPedidos[5].toString())
+                          for (var i = 0; i <= 5; i++)
+                            _SalesData(listaFechas[i].month,
+                                listaPedidos[i].toString()),
                         ],
                         xValueMapper: (_SalesData sales, _) =>
                             sales.year.toString(),
