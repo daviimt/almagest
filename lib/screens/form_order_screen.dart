@@ -152,10 +152,7 @@ class _RegisterFormState extends State<_RegisterForm> {
           ),
         ),
         const SizedBox(
-          height: 20,
-        ),
-        const SizedBox(
-          height: 10,
+          height: 30,
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.60,

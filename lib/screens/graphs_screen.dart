@@ -97,55 +97,50 @@ class _GraphsScreenState extends State<GraphsScreen> {
       body: SizedBox(
         child: Column(
           children: [
+            const SizedBox(
+              height: 20,
+            ),
             Form(
-              child: Column(
-                children: [
-                  DropdownButtonFormField(
-                    hint: const Text('Select a Product'),
-                    items: products.map((e) {
-                      return DropdownMenuItem(
-                        value: e.articleId,
-                        child: Text(e.compamyName.toString()),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      producForm.id = int.parse(value.toString());
-                    },
-                    validator: (value) {
-                      return (value != null && value != 0)
-                          ? null
-                          : 'select a Product';
-                    },
-                  ),
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    disabledColor: Colors.grey,
-                    elevation: 0,
-                    color: Colors.blueGrey[600],
-                    onPressed: () {
-                      if (producForm.id != null) {
-                        getDataGraph(producForm.id);
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 80, vertical: 15),
-                      child: Text(
-                        'Add Product',
-                        style: const TextStyle(color: Colors.white),
-                      ),
+              child: Container(
+                width: 300,
+                child: Column(
+                  children: [
+                    DropdownButtonFormField(
+                      icon: Icon(Icons.keyboard_double_arrow_down_rounded),
+                      hint: const Text('Select a Product'),
+                      iconSize: 40,
+                      items: products.map((e) {
+                        return DropdownMenuItem(
+                          value: e.articleId,
+                          child: Text(e.compamyName.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        producForm.id = int.parse(value.toString());
+                        if (producForm.id != null) {
+                          getDataGraph(producForm.id);
+                          setState(() {});
+                        }
+                        ;
+                      },
+                      validator: (value) {
+                        return (value != null && value != 0)
+                            ? null
+                            : 'select a Product';
+                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+            ),
+            const SizedBox(
+              height: 90,
             ),
             if (!listaPedidos.isEmpty)
               SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
                   // Chart title
-                  title: ChartTitle(text: 'Past 6 month analisis'),
+                  title: ChartTitle(text: 'Past 6 month orders'),
                   // Enable legend
                   legend: Legend(isVisible: true),
                   // Enable tooltip
